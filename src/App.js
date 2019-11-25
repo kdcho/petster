@@ -1,27 +1,39 @@
-import React from 'react'
-import Card from './Card.js'
+import React, { useState } from 'react'
+import Profile from './Profile.js'
 import GlobalStyle from './styles/GlobalStyle'
 import styled from 'styled-components/macro'
+import Modal from './components/Modal.js'
 
 function App() {
   const database = require('./database.json')
   console.log(database)
 
+  const [modal, setModal] = useState(false)
+
   return (
     <>
       <GlobalStyle />
-      <CardContainer>
-        {database.map(card => (
-          <Card key={card._id} {...card} />
+      <Modal onClick={() => handleModal()} active={modal} />
+      <ProfileContainer>
+        {database.map(profile => (
+          <Profile
+            key={profile._id}
+            handleModal={() => handleModal()}
+            {...profile}
+          />
         ))}
-      </CardContainer>
+      </ProfileContainer>
     </>
   )
+
+  function handleModal() {
+    setModal(!modal)
+  }
 }
 
 export default App
 
-const CardContainer = styled.div`
+const ProfileContainer = styled.div`
   display: flex;
   gap: 30px;
   justify-content: space-evenly;

@@ -4,9 +4,9 @@ import styled from 'styled-components/macro'
 import maleImg from './img/male.svg'
 import femaleImg from './img/female.svg'
 
-export default function Card({ ...props }) {
+export default function Profile({ handleModal, ...props }) {
   return (
-    <CardBox>
+    <ProfileBox onClick={handleModal}>
       <PictureContainer>
         <ProfilePicture
           src={props.profilePicture}
@@ -20,13 +20,16 @@ export default function Card({ ...props }) {
       </PictureContainer>
       <Name>{props.name}</Name>
       <Registered>Am {props.registered.substr(0, 5)} hinzugefügt</Registered>
-    </CardBox>
+    </ProfileBox>
   )
 }
 
-const CardBox = styled.div`
+const ProfileBox = styled.div`
   display: grid;
   text-align: center;
+  background: #eaeaea;
+  padding: 10px;
+  border-radius: 5px;
 `
 
 const Name = styled.p`
@@ -55,7 +58,7 @@ const PictureContainer = styled.div`
 const ProfilePicture = styled.img`
   border-radius: 50%;
   width: 100%;
-  max-width: 100px;
+  max-width: 120px;
 `
 
 const Registered = styled.p`
