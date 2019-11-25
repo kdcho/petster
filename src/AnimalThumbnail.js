@@ -4,9 +4,9 @@ import styled from 'styled-components/macro'
 import maleImg from './img/male.svg'
 import femaleImg from './img/female.svg'
 
-export default function Profile({ handleModal, ...props }) {
+export default function AnimalThumbnail({ handleModal, ...props }) {
   return (
-    <ProfileBox onClick={handleModal}>
+    <Thumbnail onClick={handleModal}>
       <PictureContainer>
         <ProfilePicture
           src={props.profilePicture}
@@ -20,11 +20,11 @@ export default function Profile({ handleModal, ...props }) {
       </PictureContainer>
       <Name>{props.name}</Name>
       <Registered>Am {props.registered.substr(0, 5)} hinzugefügt</Registered>
-    </ProfileBox>
+    </Thumbnail>
   )
 }
 
-const ProfileBox = styled.div`
+const Thumbnail = styled.div`
   display: grid;
   text-align: center;
   border-radius: 5px;
