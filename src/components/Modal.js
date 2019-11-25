@@ -1,11 +1,13 @@
+import React from 'react'
 import styled from 'styled-components/macro'
 
-
 export default styled.div`
-  background: lightgray;
-  width: 100%;
-  height: 100vh;
-  z-index: 1;
-  position: absolute;
-  top: 0;
-`
+  background: #ffffff;
+  width: 90%;
+  height: 90%;
+  z-index: 2;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;`

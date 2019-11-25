@@ -11,7 +11,7 @@ function App() {
 
   const [modal, setModal] = useState(false)
   const props = useSpring({
-    opacity: 1,
+    display: modal ? 'block' : 'none',
     from: { opacity: 0 },
     opacity: modal ? 1 : 0,
     config: { duration: 200 }
@@ -39,6 +39,21 @@ function App() {
 
   function handleModal() {
     setModal(!modal)
+    handleScroll()
+  }
+
+  function handleScroll() {
+    const scrollPos = window.scrollY
+    if (!modal) {
+      document.body.style.overflowY ='hidden'
+      console.log(scrollPos)
+    } else {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.overflowY =''
+      window.scrollTo(0, scrollPos)
+      console.log(scrollPos)
+    }
   }
 }
 
@@ -46,8 +61,7 @@ export default App
 
 const ProfileContainer = styled.div`
   display: flex;
-  gap: 30px;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin: 20px;
+  margin: 10px;
 `

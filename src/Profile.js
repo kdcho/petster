@@ -27,9 +27,12 @@ export default function Profile({ handleModal, ...props }) {
 const ProfileBox = styled.div`
   display: grid;
   text-align: center;
-  background: #eaeaea;
-  padding: 10px;
   border-radius: 5px;
+  margin: 10px;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
+  &:hover {
+    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.2), 0 0 2rem rgba(0, 0, 0, 0.2);
+  }
 `
 
 const Name = styled.p`
@@ -41,28 +44,33 @@ const Name = styled.p`
 const Gender = styled.img`
   position: absolute;
   right: 0;
-  top: 5px;
+  top: 0;
   width: 30px;
   background: #ffffff;
   border: 3px solid
     ${props => (props.gender === 'male' ? '#99ddfc' : '#f1919b')};
-  border-radius: 20%;
+  border-radius: 5px;
   padding: 3px;
 `
 
 const PictureContainer = styled.div`
+  height: 150px;
+  width: 150px;
   overflow: hidden;
   position: relative;
 `
 
 const ProfilePicture = styled.img`
-  border-radius: 50%;
   width: 100%;
-  max-width: 120px;
+  height: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  object-fit: cover;
 `
 
 const Registered = styled.p`
   font-size: 13px;
   margin: 0;
   color: gray;
+  padding-bottom: 5px;
 `
