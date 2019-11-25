@@ -3,17 +3,28 @@ import Profile from './Profile.js'
 import GlobalStyle from './styles/GlobalStyle'
 import styled from 'styled-components/macro'
 import Modal from './components/Modal.js'
+import { useSpring, animated } from 'react-spring'
 
 function App() {
   const database = require('./database.json')
-  console.log(database)
+  const AnimatedModal = animated(Modal)
 
   const [modal, setModal] = useState(false)
+  const props = useSpring({
+    opacity: 1,
+    from: { opacity: 0 },
+    opacity: modal ? 1 : 0,
+    config: { duration: 200 }
+  })
 
   return (
     <>
       <GlobalStyle />
-      <Modal onClick={() => handleModal()} active={modal} />
+      <AnimatedModal
+        onClick={() => handleModal()}
+        style={props}
+        active={modal}
+      ></AnimatedModal>
       <ProfileContainer>
         {database.map(profile => (
           <Profile
