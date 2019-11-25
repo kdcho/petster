@@ -4,7 +4,7 @@ import GlobalStyle from './styles/GlobalStyle'
 import styled from 'styled-components/macro'
 
 function App() {
-  const database = require('./cards.json')
+  const database = require('./database.json')
   console.log(database)
 
   return (
@@ -12,13 +12,7 @@ function App() {
       <GlobalStyle />
       <CardContainer>
         {database.map(card => (
-          <Card
-            key={card._id}
-            name={card.name}
-            gender={card.gender}
-            registered={card.registered}
-            picture={card.picture}
-          />
+          <Card key={card._id} {...card} />
         ))}
       </CardContainer>
     </>

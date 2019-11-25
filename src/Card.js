@@ -1,18 +1,25 @@
 import React from 'react'
 import styled from 'styled-components/macro'
 
-export default function Card({ name, gender, registered, picture }) {
-  const male = '/img/male.svg'
-  const female = '/img/female.svg'
+import maleImg from './img/male.svg'
+import femaleImg from './img/female.svg'
 
+export default function Card({ ...props }) {
   return (
     <CardBox>
       <PictureContainer>
-        <ProfilePicture src={picture} alt={name}></ProfilePicture>
-        <Gender src={gender === 'male' ? male : female} alt={gender} gender={gender}></Gender>
+        <ProfilePicture
+          src={props.profilePicture}
+          alt={props.name}
+        ></ProfilePicture>
+        <Gender
+          src={props.gender === 'male' ? maleImg : femaleImg}
+          alt={props.gender}
+          gender={props.gender}
+        ></Gender>
       </PictureContainer>
-      <Name>{name}</Name>
-      <Registered>Am {registered} hinzugefügt</Registered>
+      <Name>{props.name}</Name>
+      <Registered>Am {props.registered.substr(0, 5)} hinzugefügt</Registered>
     </CardBox>
   )
 }
@@ -34,7 +41,8 @@ const Gender = styled.img`
   top: 5px;
   width: 30px;
   background: #ffffff;
-  border: 3px solid ${props => props.gender === 'male' ? '#99ddfc' : '#f1919b'};
+  border: 3px solid
+    ${props => (props.gender === 'male' ? '#99ddfc' : '#f1919b')};
   border-radius: 20%;
   padding: 3px;
 `
@@ -47,7 +55,7 @@ const PictureContainer = styled.div`
 const ProfilePicture = styled.img`
   border-radius: 50%;
   width: 100%;
-  max-width: 120px;
+  max-width: 100px;
 `
 
 const Registered = styled.p`
