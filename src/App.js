@@ -2,30 +2,32 @@ import React, { useState } from 'react'
 import GlobalStyle from './styles/GlobalStyle'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Gallery from './Gallery.js'
+import AnimalProfile from './AnimalProfile'
 
 function App() {
+  const [animal, setAnimal] = useState(JSON.parse(localStorage.animal) || {})
   const database = require('./database.json')
-  const [modal, setModal] = useState(false)
-
   return (
     <Router>
-      <>
-        <GlobalStyle />
-        <Switch>
-          <Route path="/">
-            <Gallery database={database} handleModal={handleModal} />
-          </Route>
-        </Switch>
+      <GlobalStyle />
+      <Switch>
+        <Route exact path="/">
+          <Gallery database={database} handleAnimal={handleAnimal} />
+        </Route>
+        <Route path="/animalprofile/*">
+          <AnimalProfile animal={animal} />
+        </Route>
+      </Switch>
 
-        <nav>
-          <Link to="/">Gallery</Link>
-        </nav>
-      </>
+      <nav>
+        <Link to="/">Gallery</Link>
+        <Link to="/animalprofile">AnimalProfile</Link>
+      </nav>
     </Router>
   )
-
-  function handleModal() {
-    setModal(!modal)
+  function handleAnimal(animal) {
+    setAnimal(animal === {} ? JSON.parse(localStorage.animal) : animal)
+    localStorage.animal = JSON.stringify(animal)
   }
 }
 

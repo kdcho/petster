@@ -1,12 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import maleImg from './img/male.svg'
 import femaleImg from './img/female.svg'
 
-export default function AnimalThumbnail({ handleModal, ...props }) {
+export default function AnimalThumbnail({ handleAnimal, ...props }) {
   return (
-    <Thumbnail onClick={handleModal}>
+    <Thumbnail to={() => `/animalprofile/${props._id}`} onClick={handleAnimal}>
       <PictureContainer>
         <ProfilePicture
           src={props.profilePicture}
@@ -24,11 +25,12 @@ export default function AnimalThumbnail({ handleModal, ...props }) {
   )
 }
 
-const Thumbnail = styled.div`
+const Thumbnail = styled(Link)`
   display: grid;
   text-align: center;
   border-radius: 5px;
   margin: 10px;
+  text-decoration: none;
   box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
   &:hover {
     box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.2), 0 0 2rem rgba(0, 0, 0, 0.2);

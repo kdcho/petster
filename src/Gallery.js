@@ -1,16 +1,15 @@
 import React from 'react'
-import AnimalThumbnail from "./AnimalThumbnail";
+import AnimalThumbnail from './AnimalThumbnail'
 import styled from 'styled-components/macro'
 
-
-export default function Gallery({database, handleModal}) {
+export default function Gallery({ database, handleAnimal }) {
   return (
     <ProfileContainer>
-      {database.map(profile => (
+      {database.map(animal => (
         <AnimalThumbnail
-          key={profile._id}
-          handleModal={() => handleModal()}
-          {...profile}
+          key={animal._id}
+          handleAnimal={() => handleAnimal(animal)}
+          {...animal}
         />
       ))}
     </ProfileContainer>
