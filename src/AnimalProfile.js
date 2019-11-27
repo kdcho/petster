@@ -23,20 +23,19 @@ export default function AnimalProfile({ animal }) {
           gender={animal.gender}
         ></Gender>
       </CarouselContainer>
-      <Name>{animal.name}</Name>
-      <Age>{animal.age}</Age>
-      <Race>{animal.race}</Race>
-      <Tags>{animal.tags}</Tags>
-      <Registered>Am {animal.registered.substr(0, 5)} hinzugefügt</Registered>
-      <Contact>Kontaktinformationen anzeigen</Contact>
+      <DetailsContainer>
+        <Name>{animal.name}</Name>
+        <Age>{animal.age}</Age>
+        <Race>{animal.race}</Race>
+        <Tags>{animal.tags}</Tags>
+        <Registered>Am {animal.registered.substr(0, 5)} hinzugefügt</Registered>
+        <Contact>Kontaktinformationen anzeigen</Contact>
+      </DetailsContainer>
     </Profile>
   )
 }
 
 const Profile = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background: white;
   height: 100vh;
   text-align: center;
@@ -79,6 +78,10 @@ const Gender = styled.img`
     ${animal => (animal.gender === 'male' ? '#99ddfc' : '#f1919b')};
   padding: 3px;
   border-bottom-left-radius: 30px;
+`
+
+const DetailsContainer = styled.div`
+  display: flex;
 `
 
 const Name = styled.h1`
