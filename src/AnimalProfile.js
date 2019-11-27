@@ -8,14 +8,13 @@ import femaleImg from './img/female.svg'
 
 export default function AnimalProfile({ animal }) {
   const gallery = [animal.profilePicture, ...animal.gallery]
-  console.log('here', gallery)
 
   return (
     <Profile>
       <CarouselContainer>
         <Carousel showThumbs={false}>
-          {gallery.map(index => (
-            <Slider src={index} alt={animal.name}></Slider>
+          {gallery.map((picture, index) => (
+            <Slider key={index} src={picture} alt={animal.name}></Slider>
           ))}
         </Carousel>
         <Gender

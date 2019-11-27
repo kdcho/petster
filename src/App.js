@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import GlobalStyle from './styles/GlobalStyle'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Gallery from './Gallery.js'
@@ -9,7 +9,6 @@ function App() {
   let localData = {}
   try {
      localData = JSON.parse(localStorage.animal)
-     console.log('tri', localData)
   } catch (error) {
     localData = {}
     console.error('Fehler: ', error.message)
