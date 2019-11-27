@@ -1,30 +1,43 @@
-import React from 'react'
-import Card from './Card.js'
+import React, { useState } from 'react'
 import GlobalStyle from './styles/GlobalStyle'
-import styled from 'styled-components/macro'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import Gallery from './Gallery.js'
+import AnimalProfile from './AnimalProfile'
 
 function App() {
+  const [animal, setAnimal] = useState({})
+  let localData = {}
+  try {
+     localData = JSON.parse(localStorage.animal)
+  } catch (error) {
+    localData = {}
+    console.error('Fehler: ', error.message)
+  }
+  
   const database = require('./database.json')
-  console.log(database)
-
   return (
-    <>
+    <Router>
       <GlobalStyle />
-      <CardContainer>
-        {database.map(card => (
-          <Card key={card._id} {...card} />
-        ))}
-      </CardContainer>
-    </>
+      <Switch>
+        <Route exact path="/">
+          <Gallery database={database} handleAnimal={handleAnimal} />
+        </Route>
+        <Route path="/animalprofile/*">
+          <AnimalProfile animal={!animal || localData} />
+        </Route>
+      </Switch>
+
+      <nav>
+        <Link to="/">Gallery</Link>
+        <Link to="/animalprofile">AnimalProfile</Link>
+      </nav>
+    </Router>
   )
+
+  function handleAnimal(animal) {
+    setAnimal(animal)
+    localStorage.animal = JSON.stringify(animal)
+  }
 }
 
 export default App
-
-const CardContainer = styled.div`
-  display: flex;
-  gap: 30px;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  margin: 20px;
-`
