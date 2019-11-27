@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children } from 'react'
 import styled from 'styled-components/macro'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
@@ -25,9 +25,11 @@ export default function AnimalProfile({ animal }) {
       </CarouselContainer>
       <DetailsContainer>
         <Name>{animal.name}</Name>
-        <Age>{animal.age}</Age>
-        <Race>{animal.race}</Race>
-        <Tags>{animal.tags}</Tags>
+        <Subtitle>
+          <Race>{animal.race},</Race>
+          <Age>{animal.age} Wochen alt</Age>
+        </Subtitle>
+        <Description>{animal.description}</Description>
         <Registered>Am {animal.registered.substr(0, 5)} hinzugefügt</Registered>
         <Contact>Kontaktinformationen anzeigen</Contact>
       </DetailsContainer>
@@ -36,6 +38,9 @@ export default function AnimalProfile({ animal }) {
 }
 
 const Profile = styled.section`
+  display: flex;
+  flex-direction: column;
+
   background: white;
   height: 100vh;
   text-align: center;
@@ -81,36 +86,60 @@ const Gender = styled.img`
 `
 
 const DetailsContainer = styled.div`
-  display: flex;
+  flex-grow: 1;
+  display: grid;
+  height: auto;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 60px 50px 1fr 30px 50px;
 `
 
 const Name = styled.h1`
-  display: inline-block;
-  margin: 10px 0;
+  justify-self: start;
+  margin: 10px 0 10px 10px;
+  font-size: 40px;
+  grid-column: 1 / span 4;
 `
 
-const Age = styled.p``
+const Subtitle = styled.div`
+  justify-self: start;
+  margin: 10px 0 10px 10px;
+  grid-column: 1 / span 4;
+`
+const Race = styled.h2`
+  display: inline;
+  justify-self: start;
+  margin: 10px 0 10px 10px;
+`
 
-const Race = styled.p``
-
-const Tags = styled.p``
-
+const Age = styled.h2`
+  display: inline;
+  justify-self: start;
+  margin: 10px 0 10px 10px;
+`
+const Description = styled.p`
+  padding: 10px;
+  text-align: left;
+  grid-column: 1 / span 4;
+`
 const Registered = styled.p`
   font-size: 13px;
   margin: 0;
   color: gray;
-  padding-bottom: 5px;
+  padding: 5px 0;
+  align-self: end;
+  grid-column: 1 / span 4;
 `
 
 const Contact = styled.button`
+  display: absolute;
   border: none;
   outline: 0;
-  display: inline-block;
   padding: 8px;
   color: white;
-  background-color: #000;
+  background: ${animal => (animal.gender === 'male' ? '#99ddfc' : '#f1919b')};
   text-align: center;
   cursor: pointer;
   width: 100%;
   font-size: 18px;
+  grid-column: 1 / span 4;
 `

@@ -3,6 +3,8 @@ import GlobalStyle from './styles/GlobalStyle'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Gallery from './Gallery.js'
 import AnimalProfile from './AnimalProfile'
+import styled from 'styled-components/macro'
+
 
 function App() {
   let dataFromStorage = JSON.parse(localStorage.animal || {})
@@ -21,10 +23,10 @@ function App() {
         </Route>
       </Switch>
 
-      <nav>
+      <Navigation>
         <Link to="/">Gallery</Link>
         <Link to="/animalprofile">AnimalProfile</Link>
-      </nav>
+      </Navigation>
     </Router>
   )
 
@@ -33,5 +35,11 @@ function App() {
     localStorage.animal = JSON.stringify(animal)
   }
 }
+
+const Navigation = styled.nav`
+position: absolute;
+z-index: 2; 
+top: 0;
+`
 
 export default App
