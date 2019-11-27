@@ -5,15 +5,9 @@ import Gallery from './Gallery.js'
 import AnimalProfile from './AnimalProfile'
 
 function App() {
-  const [animal, setAnimal] = useState({})
-  let localData = {}
-  try {
-     localData = JSON.parse(localStorage.animal)
-  } catch (error) {
-    localData = {}
-    console.error('Fehler: ', error.message)
-  }
-  
+  let dataFromStorage = JSON.parse(localStorage.animal || {})
+  const [animal, setAnimal] = useState(dataFromStorage)
+
   const database = require('./database.json')
   return (
     <Router>
@@ -23,7 +17,7 @@ function App() {
           <Gallery database={database} handleAnimal={handleAnimal} />
         </Route>
         <Route path="/animalprofile/*">
-          <AnimalProfile animal={!animal || localData} />
+          <AnimalProfile animal={!animal || dataFromStorage} />
         </Route>
       </Switch>
 
