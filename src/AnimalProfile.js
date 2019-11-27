@@ -41,7 +41,25 @@ const Profile = styled.section`
   height: 100vh;
   text-align: center;
 `
-const CarouselContainer = styled.div``
+const CarouselContainer = styled.div`
+  .carousel .carousel-status {
+    position: absolute;
+    left: 10px;
+    right: inherit;
+  }
+  .carousel.carousel-slider .control-arrow {
+    padding: 15px;
+  }
+  .carousel .control-next.control-arrow::before {
+    border-left: 12px solid #fff;
+  }
+  .carousel .control-prev.control-arrow::before {
+    border-right: 12px solid #fff;
+  }
+  ul {
+    padding: 0;
+  }
+`
 const Slider = styled.img`
   max-height: 300px;
   height: 100%;
