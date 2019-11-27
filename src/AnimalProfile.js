@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/macro'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { Carousel } from 'react-responsive-carousel'
 
 import maleImg from './img/male.svg'
 import femaleImg from './img/female.svg'
@@ -7,44 +9,46 @@ import femaleImg from './img/female.svg'
 export default function AnimalProfile({ animal }) {
   const gallery = [animal.profilePicture, ...animal.gallery]
   console.log('here', gallery)
+
   return (
-      <Profile>
-        <PictureContainer>
-          <ProfilePicture
-            src={animal.profilePicture}
-            alt={animal.name}
-          ></ProfilePicture>
-          <Gender
-            src={animal.gender === 'male' ? maleImg : femaleImg}
-            alt={animal.gender}
-            gender={animal.gender}
-          ></Gender>
-        </PictureContainer>
-        <Name>{animal.name}</Name>
-        <Age>{animal.age}</Age>
-        <Race>{animal.race}</Race>
-        <Tags>{animal.tags}</Tags>
-        <Registered>Am {animal.registered.substr(0, 5)} hinzugefügt</Registered>
-      </Profile>
+    <Profile>
+      <CarouselContainer>
+        <Carousel showThumbs={false}>
+          {gallery.map(index => (
+            <Slider src={index} alt={animal.name}></Slider>
+          ))}
+        </Carousel>
+        <Gender
+          src={animal.gender === 'male' ? maleImg : femaleImg}
+          alt={animal.gender}
+          gender={animal.gender}
+        ></Gender>
+      </CarouselContainer>
+      <Name>{animal.name}</Name>
+      <Age>{animal.age}</Age>
+      <Race>{animal.race}</Race>
+      <Tags>{animal.tags}</Tags>
+      <Registered>Am {animal.registered.substr(0, 5)} hinzugefügt</Registered>
+      <Contact>Kontaktinformationen anzeigen</Contact>
+    </Profile>
   )
 }
 
 const Profile = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: white;
   height: 100vh;
+  text-align: center;
 `
-
-const PictureContainer = styled.div`
-  height: 300px;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-`
-
-const ProfilePicture = styled.img`
-  width: 100%;
+const CarouselContainer = styled.div``
+const Slider = styled.img`
+  max-height: 300px;
   height: 100%;
+  width: 100%;
   object-fit: cover;
+  position: relative;
 `
 
 const Gender = styled.img`
@@ -53,9 +57,11 @@ const Gender = styled.img`
   top: 0;
   width: 50px;
   background: #ffffff;
+  z-index: 3;
   border: 3px solid
     ${animal => (animal.gender === 'male' ? '#99ddfc' : '#f1919b')};
   padding: 3px;
+  border-bottom-left-radius: 30px;
 `
 
 const Name = styled.h1`
@@ -74,4 +80,17 @@ const Registered = styled.p`
   margin: 0;
   color: gray;
   padding-bottom: 5px;
+`
+
+const Contact = styled.button`
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
 `
