@@ -61,10 +61,6 @@ const BurgerBtn = styled.div`
     transform: ${props => (props.sideNavOpen ? 'rotate(135deg)' : 'none')};
   }
 `
-const Header = styled.div`
-  background: #eae8e5;
-  height: 60px;
-`
 
 const SideNav = styled.nav`
   position: absolute;

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import GlobalStyle from './styles/GlobalStyle'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Gallery from './Gallery.js'
 import AnimalProfile from './AnimalProfile'
-import styled from 'styled-components/macro'
 
 function App() {
   let dataFromStorage = JSON.parse(localStorage.animal || {})
