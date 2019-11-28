@@ -5,7 +5,6 @@ import Gallery from './Gallery.js'
 import AnimalProfile from './AnimalProfile'
 import styled from 'styled-components/macro'
 
-
 function App() {
   let dataFromStorage = JSON.parse(localStorage.animal || {})
   const [animal, setAnimal] = useState(dataFromStorage)
@@ -19,14 +18,9 @@ function App() {
           <Gallery database={database} handleAnimal={handleAnimal} />
         </Route>
         <Route path="/animalprofile/*">
-          <AnimalProfile animal={!animal || dataFromStorage} />
+            <AnimalProfile animal={!animal || dataFromStorage} />
         </Route>
       </Switch>
-
-      <Navigation>
-        <Link to="/">Gallery</Link>
-        <Link to="/animalprofile">AnimalProfile</Link>
-      </Navigation>
     </Router>
   )
 
@@ -35,11 +29,5 @@ function App() {
     localStorage.animal = JSON.stringify(animal)
   }
 }
-
-const Navigation = styled.nav`
-position: absolute;
-z-index: 2; 
-top: 0;
-`
 
 export default App
