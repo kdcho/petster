@@ -34,7 +34,7 @@ export default function AnimalProfile({ animal }) {
           <DetailsContainer sideNavOpen={sideNavOpen}>
             <Name>{animal.name}</Name>
             <Subtitle>
-              <Race>{animal.race},</Race>
+              <Breed>{animal.breed},</Breed>
               <Age>{animal.age} Wochen alt</Age>
             </Subtitle>
             <Description>{animal.description}</Description>
@@ -128,7 +128,7 @@ const Subtitle = styled.div`
   grid-column: 1 / span 4;
 `
 
-const Race = styled.h2`
+const Breed = styled.h2`
   display: inline;
   justify-self: start;
   color: #383838;

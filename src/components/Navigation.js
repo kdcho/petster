@@ -25,7 +25,7 @@ const Container = styled.div`
 `
 
 const BurgerBtn = styled.div`
-  border-top: 2px solid #f85051;
+  border-top: 2px solid #f1919b;
   height: 25px;
   width: 30px;
   box-sizing: border-box;
@@ -43,7 +43,7 @@ const BurgerBtn = styled.div`
     height: 2px;
     width: ${props => (props.sideNavOpen ? '33px' : '30px')};
     left: ${props => (props.sideNavOpen ? '-2px' : '0')};
-    background: #f85051;
+    background: #f1919b;
     top: 10px;
     transition: all 0.3s ease-in;
     transform: ${props => (props.sideNavOpen ? 'rotate(45deg)' : 'none')};
@@ -55,7 +55,7 @@ const BurgerBtn = styled.div`
     height: 2px;
     width: ${props => (props.sideNavOpen ? '33px' : '30px')};
     left: ${props => (props.sideNavOpen ? '-2px' : '0')};
-    background: #f85051;
+    background: #f1919b;
     bottom: ${props => (props.sideNavOpen ? '11px' : '0')};
     transition: all 0.3s ease-in;
     transform: ${props => (props.sideNavOpen ? 'rotate(135deg)' : 'none')};
@@ -75,7 +75,7 @@ const MenuItem = styled.li`
     height: 30px;
     margin: 30px 0;
     background: #eae8e5;
-    transition: all 0.6s ease-in;
+    transition: all 0.4s ease-in;
     width: ${props => (props.sideNavOpen ? '200px' : '0')};
     margin-left: ${props => (props.sideNavOpen ? '0' : 'unset')};
   }

@@ -11,7 +11,7 @@
     "age": 23,
     "name": "Trisha",
     "gender": "female",
-    "race": "Deloris",
+    "breed": "Deloris",
     "registered": "29.12.2015",
     "description": "lorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit amet",
     "tags": ["minim", "tempor", "Lorem"]
@@ -28,7 +28,7 @@
     "age": 33,
     "name": "Rutledge",
     "gender": "male",
-    "race": "Fanny",
+    "breed": "Fanny",
     "registered": "25.09.2017",
     "tags": ["voluptate", "in", "sit"]
   },
@@ -44,7 +44,7 @@
     "age": 35,
     "name": "Cohen",
     "gender": "male",
-    "race": "Copeland",
+    "breed": "Copeland",
     "registered": "22.06.2017",
     "tags": ["ad", "id", "enim"]
   },
@@ -60,7 +60,7 @@
     "age": 38,
     "name": "Chapman",
     "gender": "male",
-    "race": "Rene",
+    "breed": "Rene",
     "registered": "23.05.2018",
     "tags": ["fugiat", "consectetur", "amet"]
   },
@@ -76,7 +76,7 @@
     "age": 20,
     "name": "Kathleen",
     "gender": "female",
-    "race": "Cook",
+    "breed": "Cook",
     "registered": "12.02.2015",
     "tags": ["aliqua", "labore", "est"]
   },
@@ -92,7 +92,7 @@
     "age": 35,
     "name": "Rosie",
     "gender": "female",
-    "race": "Erma",
+    "breed": "Erma",
     "registered": "23.07.2015",
     "tags": ["est", "deserunt", "anim"]
   },
@@ -108,7 +108,7 @@
     "age": 32,
     "name": "Ward",
     "gender": "male",
-    "race": "Chavez",
+    "breed": "Chavez",
     "registered": "19.04.2016",
     "tags": ["aute", "sint", "reprehenderit"]
   },
@@ -124,7 +124,7 @@
     "age": 26,
     "name": "Dorthy",
     "gender": "female",
-    "race": "Pruitt",
+    "breed": "Pruitt",
     "registered": "19.06.2018",
     "tags": ["fugiat", "minim", "aliqua"]
   },
@@ -140,7 +140,7 @@
     "age": 37,
     "name": "Crystal",
     "gender": "female",
-    "race": "Robinson",
+    "breed": "Robinson",
     "registered": "02.04.2017",
     "tags": ["irure", "ad", "labore"]
   },
@@ -156,7 +156,7 @@
     "age": 35,
     "name": "Martinez",
     "gender": "male",
-    "race": "Fischer",
+    "breed": "Fischer",
     "registered": "11.08.2014",
     "tags": ["quis", "elit", "veniam"]
   },
@@ -172,7 +172,7 @@
     "age": 32,
     "name": "Marcia",
     "gender": "female",
-    "race": "Janette",
+    "breed": "Janette",
     "registered": "26.01.2018",
     "tags": ["aliqua", "sit", "voluptate"]
   },
@@ -188,7 +188,7 @@
     "age": 23,
     "name": "Terra",
     "gender": "female",
-    "race": "Ellis",
+    "breed": "Ellis",
     "registered": "01.10.2018",
     "tags": ["veniam", "incididunt", "esse"]
   },
@@ -204,7 +204,7 @@
     "age": 31,
     "name": "Amanda",
     "gender": "female",
-    "race": "Brooke",
+    "breed": "Brooke",
     "registered": "02.05.2016",
     "tags": ["cupidatat", "ad", "reprehenderit"]
   },
@@ -220,7 +220,7 @@
     "age": 37,
     "name": "Montoya",
     "gender": "male",
-    "race": "Barron",
+    "breed": "Barron",
     "registered": "16.08.2018",
     "tags": ["cillum", "non", "commodo"]
   },
@@ -236,7 +236,7 @@
     "age": 23,
     "name": "Gardner",
     "gender": "male",
-    "race": "Katrina",
+    "breed": "Katrina",
     "registered": "29.06.2015",
     "tags": ["mollit", "elit", "ullamco"]
   },
@@ -252,7 +252,7 @@
     "age": 22,
     "name": "Felicia",
     "gender": "female",
-    "race": "Eula",
+    "breed": "Eula",
     "registered": "13.10.2018",
     "tags": ["quis", "culpa", "Lorem"]
   },
@@ -268,7 +268,7 @@
     "age": 22,
     "name": "Marina",
     "gender": "female",
-    "race": "Julie",
+    "breed": "Julie",
     "registered": "26.01.2019",
     "tags": ["fugiat", "commodo", "enim"]
   },
@@ -284,7 +284,7 @@
     "age": 31,
     "name": "Clayton",
     "gender": "male",
-    "race": "Juanita",
+    "breed": "Juanita",
     "registered": "15.02.2018",
     "tags": ["labore", "consequat", "reprehenderit"]
   },
@@ -300,7 +300,7 @@
     "age": 37,
     "name": "Lourdes",
     "gender": "female",
-    "race": "Hopper",
+    "breed": "Hopper",
     "registered": "27.02.2018",
     "tags": ["tempor", "nisi", "aute"]
   },
@@ -316,7 +316,7 @@
     "age": 31,
     "name": "Vasquez",
     "gender": "male",
-    "race": "Cline",
+    "breed": "Cline",
     "registered": "19.01.2017",
     "tags": ["exercitation", "exercitation", "ullamco"]
   }
