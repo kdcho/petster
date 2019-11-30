@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import GlobalStyle from './styles/GlobalStyle'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Gallery from './Gallery.js'
 import AnimalProfile from './AnimalProfile'
 
@@ -17,14 +17,9 @@ function App() {
           <Gallery database={database} handleAnimal={handleAnimal} />
         </Route>
         <Route path="/animalprofile/*">
-          <AnimalProfile animal={!animal || dataFromStorage} />
+            <AnimalProfile animal={!animal || dataFromStorage} />
         </Route>
       </Switch>
-
-      <nav>
-        <Link to="/">Gallery</Link>
-        <Link to="/animalprofile">AnimalProfile</Link>
-      </nav>
     </Router>
   )
 
