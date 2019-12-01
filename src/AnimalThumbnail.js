@@ -31,9 +31,10 @@ const Thumbnail = styled(Link)`
   border-radius: 5px;
   margin: 10px;
   text-decoration: none;
-  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
+  color: #000;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 0rem rgba(0, 0, 0, 0.2);
   &:hover {
-    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.2), 0 0 2rem rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
   }
 `
 
