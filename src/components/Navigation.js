@@ -11,7 +11,7 @@ export default function Navigation({
   sideNavOpen,
   animalprofile
 }) {
-  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchShow, setSearchShow] = useState(false)
 
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
@@ -20,7 +20,7 @@ export default function Navigation({
         <img onClick={handleSearch} src={magnifier} alt={'search'} />
       </Header>
       <BurgerBtn onClick={handleSideNav} sideNavOpen={sideNavOpen} />
-      <Search animalprofile={animalprofile} searchOpen={searchOpen}>
+      <Search animalprofile={animalprofile} searchShow={searchShow}>
         <input placeholder="Durchsuchen..." required></input>
       </Search>
       <Sidebar sideNavOpen={sideNavOpen}>
@@ -60,7 +60,7 @@ export default function Navigation({
   )
 
   function handleSearch() {
-    setSearchOpen(!searchOpen)
+    setSearchShow(!searchShow)
   }
 }
 
@@ -162,8 +162,8 @@ const Search = styled.div`
   background: #eaeaea;
   text-align: center;
   transition: all 0.3s ease-in;
-  margin-top: ${props => (props.searchOpen ? '48px' : '0')};
-  opacity: ${props => (props.searchOpen ? '1' : '0')};
+  margin-top: ${props => (props.searchShow ? '48px' : '0')};
+  opacity: ${props => (props.searchShow ? '1' : '0')};
   & input {
     outline: none;
     margin: 7px;

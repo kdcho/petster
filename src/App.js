@@ -5,6 +5,24 @@ import Gallery from './Gallery.js'
 import AnimalProfile from './AnimalProfile'
 import Search from './components/Search'
 
+import * as firebase from 'firebase/app'
+import 'firebase/firestore'
+
+// TODO: Replace the following with your app's Firebase project configuration
+const firebaseConfig = {
+  apiKey: 'AIzaSyB-aKBXvUZmQy8OVF2Cc7pwmKhwLkG_U50',
+  authDomain: 'petster-app.firebaseapp.com',
+  databaseURL: 'https://petster-app.firebaseio.com',
+  projectId: 'petster-app',
+  storageBucket: 'petster-app.appspot.com',
+  messagingSenderId: '768467764431',
+  appId: '1:768467764431:web:2b48031a3d9970c45d63ba'
+}
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig)
+
+
 export default function App() {
   let dataFromStorage = JSON.parse(localStorage.animal || {})
   const [animal, setAnimal] = useState(dataFromStorage)
