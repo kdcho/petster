@@ -20,7 +20,7 @@ export default function Navigation({
         <img onClick={handleSearch} src={magnifier} alt={'search'} />
       </Header>
       <BurgerBtn onClick={handleSideNav} sideNavOpen={sideNavOpen} />
-      <Search searchOpen={searchOpen}>
+      <Search animalprofile={animalprofile} searchOpen={searchOpen}>
         <input placeholder="Durchsuchen..." required></input>
       </Search>
       <Sidebar sideNavOpen={sideNavOpen}>
@@ -174,15 +174,20 @@ const Search = styled.div`
     box-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.2),
       0 0 0rem rgba(0, 0, 0, 0.2);
   }
+  ${props =>
+    props.animalprofile &&
+    css`
+      display: none;
+    `}
 `
 
 const Sidebar = styled.nav`
-  z-index: 10;
   list-style-type: none;
   overflow: hidden;
   background: #c6c4c1;
   height: 100vh;
   transition: all 0.5s ease-in;
+  position: ${props => (props.sideNavOpen ? 'fixed' : 'unset')};
   padding: ${props => (props.sideNavOpen ? '50px 30px 30px 30px' : '0')};
   width: ${props => (props.sideNavOpen ? '300px' : '0')};
 `
