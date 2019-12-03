@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components/macro'
 import { Link } from 'react-router-dom'
+import SearchInput from './Search'
 
 import logo from '../img/logo.svg'
 import magnifier from '../img/magnifier_dark.svg'
@@ -20,9 +21,9 @@ export default function Navigation({
         <img onClick={handleSearch} src={magnifier} alt={'search'} />
       </Header>
       <BurgerBtn onClick={handleSideNav} sideNavOpen={sideNavOpen} />
-      <Search animalprofile={animalprofile} searchShow={searchShow}>
-        <input placeholder="Durchsuchen..." required></input>
-      </Search>
+      <Searchbar animalprofile={animalprofile} searchShow={searchShow}>
+        <SearchInput />
+      </Searchbar>
       <Sidebar sideNavOpen={sideNavOpen}>
         <MenuItem to={'/'} onClick={handleSideNav} sideNavOpen={sideNavOpen}>
           Gallery
@@ -80,7 +81,7 @@ const BurgerBtn = styled.div`
   height: 25px;
   width: 27px;
   position: fixed;
-  z-index: 4;
+  z-index: 1;
   left: 20px;
   top: 14px;
   border-color: ${props => (props.sideNavOpen ? 'transparent' : 'none')};
@@ -120,7 +121,7 @@ const Header = styled.div`
   flex-direction: column;
   width: 100%;
   height: 48px;
-  z-index: 2;
+  z-index: 1;
   box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 0rem rgba(0, 0, 0, 0.2);
   & img:first-of-type {
     position: absolute;
@@ -157,7 +158,7 @@ const Header = styled.div`
     `}
 `
 
-const Search = styled.div`
+const Searchbar = styled.div`
   width: 100%;
   background: #eaeaea;
   text-align: center;

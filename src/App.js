@@ -10,7 +10,7 @@ import 'firebase/firestore'
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyB-aKBXvUZmQy8OVF2Cc7pwmKhwLkG_U50',
+  apiKey: 'AIzaSyBLAQCvYLxD3DosiTj-PgUYpZocIhrorq0',
   authDomain: 'petster-app.firebaseapp.com',
   databaseURL: 'https://petster-app.firebaseio.com',
   projectId: 'petster-app',
@@ -21,7 +21,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
-
 
 export default function App() {
   let dataFromStorage = JSON.parse(localStorage.animal || {})
