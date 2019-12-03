@@ -8,20 +8,30 @@ import magnifier from '../img/magnifier_dark.svg'
 
 export default function Navigation({
   handleSideNav,
-  handleSearch,
   sideNavOpen,
   animalprofile
 }) {
-  const [searchShow, setSearchShow] = useState(false)
+  const [showSearch, setshowSearch] = useState(false)
 
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
       <Header animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
         <img src={logo} alt={'logo'} />
-        <img onClick={handleSearch} src={magnifier} alt={'search'} />
+        <img
+          onClick={event => handleSearch(event)}
+          src={magnifier}
+          alt={'search'}
+        />
       </Header>
-      <BurgerBtn onClick={handleSideNav} sideNavOpen={sideNavOpen} />
-      <Searchbar animalprofile={animalprofile} searchShow={searchShow}>
+      <BurgerBtn
+        onClick={event => {
+          handleSideNav()
+          handleSearch(event)
+        }}
+        id="BurgerBtn"
+        sideNavOpen={sideNavOpen}
+      />
+      <Searchbar animalprofile={animalprofile} showSearch={showSearch}>
         <SearchInput />
       </Searchbar>
       <Sidebar sideNavOpen={sideNavOpen}>
@@ -60,14 +70,14 @@ export default function Navigation({
     </Container>
   )
 
-  function handleSearch() {
-    setSearchShow(!searchShow)
+  function handleSearch(event) {
+    setshowSearch(event.target.id === 'BurgerBtn' ? false : !showSearch)
   }
 }
 
 const Container = styled.div`
   width: 100%;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   height: ${props => (props.sideNavOpen ? '0' : '48px')};
   ${props =>
     props.animalprofile &&
@@ -128,7 +138,7 @@ const Header = styled.div`
     height: 40px;
     margin-top: 5px;
     align-self: center;
-    transition: all 0.5s ease-in;
+    transition: all 0.3s ease-in;
     ${props =>
       props.animalprofile &&
       css`
@@ -137,11 +147,11 @@ const Header = styled.div`
   }
   & img:last-of-type {
     position: absolute;
-    height: 30px;
-    margin: 10px 10px 0 0;
+    height: 50px;
+    padding: 10px;
     align-self: end;
     cursor: pointer;
-    transition: all 0.5s ease-in;
+    transition: all 0.3s ease-in;
     opacity: ${props => (props.sideNavOpen ? '0' : '1')};
     ${props =>
       props.animalprofile &&
@@ -159,12 +169,12 @@ const Header = styled.div`
 `
 
 const Searchbar = styled.div`
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   background: #eaeaea;
-  text-align: center;
-  transition: all 0.3s ease-in;
-  margin-top: ${props => (props.searchShow ? '48px' : '0')};
-  opacity: ${props => (props.searchShow ? '1' : '0')};
+  transition: all 0.2s ease-in;
+  margin-top: ${props => (props.showSearch ? '48px' : '0')};
+  opacity: ${props => (props.showSearch ? '1' : '0')};
   & input {
     outline: none;
     margin: 7px;
@@ -187,13 +197,17 @@ const Sidebar = styled.nav`
   overflow: hidden;
   background: #c6c4c1;
   height: 100vh;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   position: ${props => (props.sideNavOpen ? 'fixed' : 'unset')};
   padding: ${props => (props.sideNavOpen ? '50px 30px 30px 30px' : '0')};
   width: ${props => (props.sideNavOpen ? '300px' : '0')};
 `
 
-const MenuItem = styled(Link)`
+const LinkStyled = ({ sideNavOpen, children, ...rest }) => (
+  <Link {...rest}>{children}</Link>
+)
+
+const MenuItem = styled(LinkStyled)`
   display: block;
   word-break: keep-all;
   text-decoration: none;
@@ -203,7 +217,7 @@ const MenuItem = styled(Link)`
   height: 30px;
   margin: 30px 0;
   background: #eae8e5;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   opacity: ${props => (props.sideNavOpen ? '1' : '0')};
   width: ${props => (props.sideNavOpen ? '200px' : '0')};
   margin-left: ${props => (props.sideNavOpen ? '0' : '-40px')};

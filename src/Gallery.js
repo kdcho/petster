@@ -34,7 +34,7 @@ const GalleryBox = styled.section`
   justify-content: space-evenly;
   flex-wrap: wrap;
   width: 100%;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   margin-top: ${props => (props.sideNavOpen ? '48px' : '0')};
   margin-left: ${props => (props.sideNavOpen ? '300px' : '0')};
   opacity: ${props => (props.sideNavOpen ? '0.4' : '1')};

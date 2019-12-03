@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
 
-import magnifier from '../img/magnifier_dark.svg'
-import close from '../img/close.svg'
+import deleteIcon from '../img/delete.svg'
 
 export default function Search() {
   const breeds = require('../breeds.json')
@@ -12,16 +11,18 @@ export default function Search() {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [userInput, setUserInput] = useState('')
 
-  function onChange(event) {
-    const userInput = event.currentTarget.value
-
-    setActiveSuggestion(0)
+  useEffect(() => {
     setFilteredSuggestions(
       breeds.filter(
         suggestion =>
           suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
       )
     )
+  }, [breeds, userInput])
+
+  function onChange(event) {
+    setUserInput(event.currentTarget.value)
+    setActiveSuggestion(0)
     setShowSuggestions(true)
     setUserInput(event.currentTarget.value)
   }
@@ -91,7 +92,7 @@ export default function Search() {
           placeholder="Durchsuchen.."
           required
         />
-        <SearchIcon src={showSuggestions ? close : magnifier} />
+        <SearchIcon onClick={() => setUserInput('')} src={deleteIcon} />
         {suggestionsListComponent}
       </SearchField>
     </>
@@ -100,21 +101,26 @@ export default function Search() {
 
 const SearchField = styled.div`
   position: relative;
+  width: 214px;
+  align-self: center;
 
   & input:first-of-type {
     position: relative;
     border: 1px solid #999;
-    padding: 0.5rem;
-    width: 300px;
+    padding: 5px 8px;
+    font-size: 14px;
+    width: 200px;
     z-index: 2;
   }
 `
 const SearchIcon = styled.img`
   position: absolute;
-  height: 15px;
-  right: 80px;
-  top: 8px;
+  height: 25px;
+  padding: 5px;
+  top: 9px;
+  right: 10px;
   z-index: 2;
+  cursor: pointer;
 `
 
 const SuggestionsList = styled.ul`
@@ -141,6 +147,7 @@ const SuggestionsList = styled.ul`
   }
 
   & li:not(:last-of-type) {
+    cursor: pointer;
     border-bottom: 1px solid #999;
   }
 `

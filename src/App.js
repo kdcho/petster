@@ -8,7 +8,6 @@ import Search from './components/Search'
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 
-// TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyBLAQCvYLxD3DosiTj-PgUYpZocIhrorq0',
   authDomain: 'petster-app.firebaseapp.com',
@@ -18,8 +17,6 @@ const firebaseConfig = {
   messagingSenderId: '768467764431',
   appId: '1:768467764431:web:2b48031a3d9970c45d63ba'
 }
-
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
 export default function App() {
