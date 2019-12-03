@@ -1,27 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled, { css } from 'styled-components/macro'
 import { Link } from 'react-router-dom'
-import SearchInput from './Search'
-
 import logo from '../img/logo.svg'
 import magnifier from '../img/magnifier_dark.svg'
 
 export default function Navigation({
   handleSideNav,
+  handleSearch,
   sideNavOpen,
   animalprofile
 }) {
-  const [showSearch, setshowSearch] = useState(false)
-
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
       <Header animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
         <img src={logo} alt={'logo'} />
-        <img
-          onClick={event => handleSearch(event)}
-          src={magnifier}
-          alt={'search'}
-        />
+        <img onClick={handleSearch} src={magnifier} alt={'search'} />
       </Header>
       <BurgerBtn
         onClick={event => {
@@ -31,9 +24,6 @@ export default function Navigation({
         id="BurgerBtn"
         sideNavOpen={sideNavOpen}
       />
-      <Searchbar animalprofile={animalprofile} showSearch={showSearch}>
-        <SearchInput />
-      </Searchbar>
       <Sidebar sideNavOpen={sideNavOpen}>
         <MenuItem to={'/'} onClick={handleSideNav} sideNavOpen={sideNavOpen}>
           Gallery
@@ -69,10 +59,6 @@ export default function Navigation({
       </Sidebar>
     </Container>
   )
-
-  function handleSearch(event) {
-    setshowSearch(event.target.id === 'BurgerBtn' ? false : !showSearch)
-  }
 }
 
 const Container = styled.div`
@@ -91,7 +77,7 @@ const BurgerBtn = styled.div`
   height: 25px;
   width: 27px;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 20px;
   top: 14px;
   border-color: ${props => (props.sideNavOpen ? 'transparent' : 'none')};
@@ -131,7 +117,7 @@ const Header = styled.div`
   flex-direction: column;
   width: 100%;
   height: 48px;
-  z-index: 1;
+  z-index: 2;
   box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 0rem rgba(0, 0, 0, 0.2);
   & img:first-of-type {
     position: absolute;
@@ -165,30 +151,6 @@ const Header = styled.div`
     css`
       background: #c6c4c1;
       height: 0;
-    `}
-`
-
-const Searchbar = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: #eaeaea;
-  transition: all 0.2s ease-in;
-  margin-top: ${props => (props.showSearch ? '48px' : '0')};
-  opacity: ${props => (props.showSearch ? '1' : '0')};
-  & input {
-    outline: none;
-    margin: 7px;
-    padding: 5px 10px;
-    border: 0;
-    width: 40%;
-    border-radius: 5px;
-    box-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.2),
-      0 0 0rem rgba(0, 0, 0, 0.2);
-  }
-  ${props =>
-    props.animalprofile &&
-    css`
-      display: none;
     `}
 `
 

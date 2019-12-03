@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 
 import deleteIcon from '../img/delete.svg'
 
-export default function Search() {
+export default function Search({ getUserInput }) {
   const breeds = require('../breeds.json')
 
   const [activeSuggestion, setActiveSuggestion] = useState(0)
@@ -18,38 +18,8 @@ export default function Search() {
           suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
       )
     )
-  }, [breeds, userInput])
-
-  function onChange(event) {
-    setUserInput(event.currentTarget.value)
-    setActiveSuggestion(0)
-    setShowSuggestions(true)
-    setUserInput(event.currentTarget.value)
-  }
-
-  function onClick(event) {
-    setActiveSuggestion(0)
-    setFilteredSuggestions([])
-    setShowSuggestions(false)
-    setUserInput(event.currentTarget.innerText)
-  }
-  function onKeyDown(event) {
-    if (event.keyCode === 13) {
-      setActiveSuggestion(0)
-      setShowSuggestions(false)
-      setUserInput(filteredSuggestions[activeSuggestion])
-    } else if (event.keyCode === 38) {
-      if (activeSuggestion === 0) {
-        return
-      }
-      setActiveSuggestion(activeSuggestion - 1)
-    } else if (event.keyCode === 40) {
-      if (activeSuggestion - 1 === filteredSuggestions.length) {
-        return
-      }
-      setActiveSuggestion(activeSuggestion + 1)
-    }
-  }
+    getUserInput(userInput)
+  }, [breeds, getUserInput, userInput])
 
   let suggestionsListComponent
 
@@ -97,6 +67,43 @@ export default function Search() {
       </SearchField>
     </>
   )
+
+  function onChange(event) {
+    setActiveSuggestion(0)
+    setShowSuggestions(true)
+    setUserInput(event.currentTarget.value)
+  }
+
+  function onClick(event) {
+    setActiveSuggestion(0)
+    setFilteredSuggestions([])
+    setShowSuggestions(false)
+    setUserInput(event.currentTarget.innerText)
+  }
+  function onKeyDown(event) {
+    if (event.keyCode === 13) {
+      setActiveSuggestion(0)
+      setShowSuggestions(false)
+      console.log(filteredSuggestions)
+      console.log(event.currentTarget.value)
+      console.log(filteredSuggestions[activeSuggestion])
+      setUserInput(
+        filteredSuggestions[activeSuggestion] || event.currentTarget.value
+        )
+        setFilteredSuggestions(() => filteredSuggestions[activeSuggestion])
+      console.log(activeSuggestion)
+    } else if (event.keyCode === 38) {
+      if (activeSuggestion === 0) {
+        return
+      }
+      setActiveSuggestion(activeSuggestion - 1)
+    } else if (event.keyCode === 40) {
+      if (activeSuggestion - 1 === filteredSuggestions.length) {
+        return
+      }
+      setActiveSuggestion(activeSuggestion + 1)
+    }
+  }
 }
 
 const SearchField = styled.div`
@@ -110,7 +117,7 @@ const SearchField = styled.div`
     padding: 5px 8px;
     font-size: 14px;
     width: 200px;
-    z-index: 2;
+    z-index: 1;
   }
 `
 const SearchIcon = styled.img`
@@ -119,7 +126,7 @@ const SearchIcon = styled.img`
   padding: 5px;
   top: 9px;
   right: 10px;
-  z-index: 2;
+  z-index: 1;
   cursor: pointer;
 `
 
@@ -132,7 +139,7 @@ const SuggestionsList = styled.ul`
   margin-top: 0;
   max-height: 143px;
   overflow-y: auto;
-  z-index: 2;
+  z-index: 1;
   background: #fff;
   & li {
     padding: 0.5rem;

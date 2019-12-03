@@ -11,7 +11,7 @@
     "age": 23,
     "name": "Trisha",
     "gender": "female",
-    "breed": "Deloris",
+    "breed": "Beagle",
     "registered": "29.12.2015",
     "description": "lorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit amet",
     "tags": ["minim", "tempor", "Lorem"]
@@ -28,7 +28,7 @@
     "age": 33,
     "name": "Rutledge",
     "gender": "male",
-    "breed": "Fanny",
+    "breed": "Beagle",
     "registered": "25.09.2017",
     "tags": ["voluptate", "in", "sit"]
   },
@@ -44,7 +44,7 @@
     "age": 35,
     "name": "Cohen",
     "gender": "male",
-    "breed": "Copeland",
+    "breed": "Beagle",
     "registered": "22.06.2017",
     "tags": ["ad", "id", "enim"]
   },
@@ -60,7 +60,7 @@
     "age": 38,
     "name": "Chapman",
     "gender": "male",
-    "breed": "Rene",
+    "breed": "Collie",
     "registered": "23.05.2018",
     "tags": ["fugiat", "consectetur", "amet"]
   },
@@ -76,7 +76,7 @@
     "age": 20,
     "name": "Kathleen",
     "gender": "female",
-    "breed": "Cook",
+    "breed": "Collie",
     "registered": "12.02.2015",
     "tags": ["aliqua", "labore", "est"]
   },
@@ -92,7 +92,7 @@
     "age": 35,
     "name": "Rosie",
     "gender": "female",
-    "breed": "Erma",
+    "breed": "Collie",
     "registered": "23.07.2015",
     "tags": ["est", "deserunt", "anim"]
   },
@@ -108,7 +108,7 @@
     "age": 32,
     "name": "Ward",
     "gender": "male",
-    "breed": "Chavez",
+    "breed": "Collie",
     "registered": "19.04.2016",
     "tags": ["aute", "sint", "reprehenderit"]
   },
