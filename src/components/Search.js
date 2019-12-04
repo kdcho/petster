@@ -1,12 +1,93 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
+import Fuse from 'fuse.js'
 
 import deleteIcon from '../img/delete.svg'
 
 export default function Search({ getUserInput }) {
   const breeds = require('../breeds.json')
+  const options = {
+    shouldSort: true,
+    threshold: 0.6,
+    keys: ['name']
+  }
 
   const [activeSuggestion, setActiveSuggestion] = useState(0)
+  const [userInput, setUserInput] = useState('')
+  const [filteredSuggestions, setFilteredSuggestions] = useState([])
+
+  const breedData = new Fuse(breeds, options)
+
+  return (
+    <SearchField>
+      <input
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        value={userInput}
+        type="text"
+        placeholder="Durchsuchen.."
+      />
+      <SearchIcon />
+      <SuggestionsList>
+        {breedData.search(userInput).map((suggestedItem, index) => (
+          <li
+            onClick={onClick}
+            className="active"
+            key={index + suggestedItem.name}
+          >
+            {suggestedItem.name}
+          </li>
+        ))}
+      </SuggestionsList>
+    </SearchField>
+  )
+
+  function onChange(event) {
+    setActiveSuggestion(0)
+    setUserInput(event.currentTarget.value)
+    console.log(event)
+  }
+
+  function onClick(event) {
+    setActiveSuggestion(0)
+    setUserInput(event.currentTarget.innerText)
+  }
+
+  function onKeyDown(event) {
+    if (event.keyCode === 13) {
+      setActiveSuggestion(0)
+      setUserInput(filteredSuggestions[activeSuggestion])
+      setFilteredSuggestions(() => filteredSuggestions[activeSuggestion])
+    } else if (event.keyCode === 38) {
+      if (activeSuggestion === 0) {
+        return
+      }
+      setActiveSuggestion(activeSuggestion - 1)
+    } else if (event.keyCode === 40) {
+      if (activeSuggestion - 1 === filteredSuggestions.length) {
+        return
+      }
+      setActiveSuggestion(activeSuggestion + 1)
+    }
+  }
+  /* return (
+  <>
+    <SearchField>
+         <input
+        type="text"
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        value={userInput}
+        placeholder="Durchsuchen.."
+        required
+      />
+      <SearchIcon onClick={() => setUserInput('')} src={deleteIcon} />
+      {suggestionsListComponent}
+    </SearchField>
+  </>
+) */
+
+  /* const [activeSuggestion, setActiveSuggestion] = useState(0)
   const [filteredSuggestions, setFilteredSuggestions] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [userInput, setUserInput] = useState('')
@@ -50,25 +131,9 @@ export default function Search({ getUserInput }) {
       )
     }
   }
+ */
 
-  return (
-    <>
-      <SearchField>
-        <input
-          type="text"
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          value={userInput}
-          placeholder="Durchsuchen.."
-          required
-        />
-        <SearchIcon onClick={() => setUserInput('')} src={deleteIcon} />
-        {suggestionsListComponent}
-      </SearchField>
-    </>
-  )
-
-  function onChange(event) {
+  /* function onChange(event) {
     setActiveSuggestion(0)
     setShowSuggestions(true)
     setUserInput(event.currentTarget.value)
@@ -103,7 +168,7 @@ export default function Search({ getUserInput }) {
       }
       setActiveSuggestion(activeSuggestion + 1)
     }
-  }
+  } */
 }
 
 const SearchField = styled.div`
