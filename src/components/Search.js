@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import Fuse from 'fuse.js'
 
@@ -14,7 +14,7 @@ export default function Search({ getUserInput }) {
 
   const [activeSuggestion, setActiveSuggestion] = useState(0)
   const [userInput, setUserInput] = useState('')
-  const [filteredSuggestions, setFilteredSuggestions] = useState([])
+  const [suggestionsListOpen, setSuggestionsListOpen] = useState(false)
 
   const breedData = new Fuse(breeds, options)
 
@@ -23,16 +23,18 @@ export default function Search({ getUserInput }) {
       <input
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onBlur={onBlur}
+        onFocus={onFocus && userInput.length > 0}
         value={userInput}
         type="text"
         placeholder="Durchsuchen.."
       />
       <SearchIcon />
-      <SuggestionsList>
+      <SuggestionsList suggestionsListOpen={suggestionsListOpen}>
         {breedData.search(userInput).map((suggestedItem, index) => (
           <li
             onClick={onClick}
-            className="active"
+            className={index === activeSuggestion ? 'active' : ''}
             key={index + suggestedItem.name}
           >
             {suggestedItem.name}
@@ -45,26 +47,33 @@ export default function Search({ getUserInput }) {
   function onChange(event) {
     setActiveSuggestion(0)
     setUserInput(event.currentTarget.value)
-    console.log(event)
   }
 
   function onClick(event) {
+    setSuggestionsListOpen(true)
     setActiveSuggestion(0)
     setUserInput(event.currentTarget.innerText)
+  }
+
+  function onBlur() {
+    setSuggestionsListOpen(false)
+  }
+
+  function onFocus() {
+    setSuggestionsListOpen(true)
   }
 
   function onKeyDown(event) {
     if (event.keyCode === 13) {
       setActiveSuggestion(0)
-      setUserInput(filteredSuggestions[activeSuggestion])
-      setFilteredSuggestions(() => filteredSuggestions[activeSuggestion])
+      setUserInput(breedData[activeSuggestion])
     } else if (event.keyCode === 38) {
       if (activeSuggestion === 0) {
         return
       }
       setActiveSuggestion(activeSuggestion - 1)
     } else if (event.keyCode === 40) {
-      if (activeSuggestion - 1 === filteredSuggestions.length) {
+      if (activeSuggestion - 1 === breedData.length) {
         return
       }
       setActiveSuggestion(activeSuggestion + 1)
@@ -203,9 +212,10 @@ const SuggestionsList = styled.ul`
   list-style: none;
   margin-top: 0;
   max-height: 143px;
-  overflow-y: auto;
+  overflow-y: scroll;
   z-index: 1;
   background: #fff;
+  display: ${props => (props.suggestionsListOpen ? 'block' : 'none')};
   & li {
     padding: 0.5rem;
   }
