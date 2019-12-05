@@ -20,11 +20,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 export default function App() {
-  let dataFromStorage = JSON.parse(localStorage.animal || {})
-  const [animal, setAnimal] = useState(dataFromStorage)
+  const database = require('./database.json')
+
+  //let dataFromStorage = JSON.parse(localStorage.animal || {})
+  const [animal, setAnimal] = useState(database)
   const [sideNavOpen, setSideNavOpen] = useState(false)
 
-  const database = require('./database.json')
   return (
     <Router>
       <GlobalStyle />
@@ -39,13 +40,10 @@ export default function App() {
         </Route>
         <Route path="/animalprofile/*">
           <AnimalProfile
-            animal={!animal || dataFromStorage}
+            animal={!animal || database}
             handleSideNav={handleSideNav}
             sideNavOpen={sideNavOpen}
           />
-        </Route>
-        <Route path="/search/">
-          <Search />
         </Route>
       </Switch>
     </Router>

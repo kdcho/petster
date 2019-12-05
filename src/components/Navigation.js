@@ -29,13 +29,6 @@ export default function Navigation({
           Gallery
         </MenuItem>
         <MenuItem
-          to={'/search'}
-          onClick={handleSideNav}
-          sideNavOpen={sideNavOpen}
-        >
-          Suche
-        </MenuItem>
-        <MenuItem
           to={'/profile'}
           onClick={handleSideNav}
           sideNavOpen={sideNavOpen}

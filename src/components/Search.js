@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
 import Fuse from 'fuse.js'
+import useKeyPress from './useKeyPress'
 
 import deleteIcon from '../img/delete.svg'
 
@@ -8,34 +10,64 @@ export default function Search({ getUserInput }) {
   const breeds = require('../breeds.json')
   const options = {
     shouldSort: true,
-    threshold: 0.6,
+    tokenize: true,
+    threshold: 0.4,
     keys: ['name']
   }
 
+  const enterKey = useKeyPress('Enter')
+  const arrowUpKey = useKeyPress('ArrowUp')
+  const arrowDownKey = useKeyPress('ArrowDown')
+
   const [activeSuggestion, setActiveSuggestion] = useState(0)
   const [userInput, setUserInput] = useState('')
-  const [suggestionsListOpen, setSuggestionsListOpen] = useState(false)
+  const [filteredSuggestions, setFilteredSuggestions] = useState([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
 
   const breedData = new Fuse(breeds, options)
+
+  useEffect(() => {
+    setFilteredSuggestions(breedData.search(userInput))
+    getUserInput(userInput)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInput])
+
+  useEffect(() => {
+    if (enterKey) {
+      setShowSuggestions(false)
+      setActiveSuggestion(0)
+      setUserInput(filteredSuggestions[activeSuggestion].name)
+    } else if (arrowUpKey) {
+      if (activeSuggestion === 0) {
+        return
+      }
+      setActiveSuggestion(activeSuggestion - 1)
+    } else if (arrowDownKey) {
+      if (activeSuggestion - 1 === filteredSuggestions.length) {
+        return
+      }
+      setActiveSuggestion(activeSuggestion + 1)
+    }
+  }, [enterKey, arrowDownKey, arrowUpKey])
 
   return (
     <SearchField>
       <input
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        onBlur={onBlur}
-        onFocus={onFocus && userInput.length > 0}
+        onChange={event => {
+          setUserInput(event.currentTarget.value)
+          setShowSuggestions(true)
+        }}
         value={userInput}
         type="text"
         placeholder="Durchsuchen.."
       />
-      <SearchIcon />
-      <SuggestionsList suggestionsListOpen={suggestionsListOpen}>
+      <SearchIcon src={deleteIcon} onClick={() => setUserInput('')} />
+      <SuggestionsList showSuggestions={showSuggestions}>
         {breedData.search(userInput).map((suggestedItem, index) => (
           <li
             onClick={onClick}
             className={index === activeSuggestion ? 'active' : ''}
-            key={index + suggestedItem.name}
+            key={index + suggestedItem}
           >
             {suggestedItem.name}
           </li>
@@ -44,140 +76,11 @@ export default function Search({ getUserInput }) {
     </SearchField>
   )
 
-  function onChange(event) {
-    setActiveSuggestion(0)
-    setUserInput(event.currentTarget.value)
-  }
-
   function onClick(event) {
-    setSuggestionsListOpen(true)
-    setActiveSuggestion(0)
-    setUserInput(event.currentTarget.innerText)
-  }
-
-  function onBlur() {
-    setSuggestionsListOpen(false)
-  }
-
-  function onFocus() {
-    setSuggestionsListOpen(true)
-  }
-
-  function onKeyDown(event) {
-    if (event.keyCode === 13) {
-      setActiveSuggestion(0)
-      setUserInput(breedData[activeSuggestion])
-    } else if (event.keyCode === 38) {
-      if (activeSuggestion === 0) {
-        return
-      }
-      setActiveSuggestion(activeSuggestion - 1)
-    } else if (event.keyCode === 40) {
-      if (activeSuggestion - 1 === breedData.length) {
-        return
-      }
-      setActiveSuggestion(activeSuggestion + 1)
-    }
-  }
-  /* return (
-  <>
-    <SearchField>
-         <input
-        type="text"
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        value={userInput}
-        placeholder="Durchsuchen.."
-        required
-      />
-      <SearchIcon onClick={() => setUserInput('')} src={deleteIcon} />
-      {suggestionsListComponent}
-    </SearchField>
-  </>
-) */
-
-  /* const [activeSuggestion, setActiveSuggestion] = useState(0)
-  const [filteredSuggestions, setFilteredSuggestions] = useState([])
-  const [showSuggestions, setShowSuggestions] = useState(false)
-  const [userInput, setUserInput] = useState('')
-
-  useEffect(() => {
-    setFilteredSuggestions(
-      breeds.filter(
-        suggestion =>
-          suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-      )
-    )
-    getUserInput(userInput)
-  }, [breeds, getUserInput, userInput])
-
-  let suggestionsListComponent
-
-  if (showSuggestions && userInput) {
-    if (filteredSuggestions.length) {
-      suggestionsListComponent = (
-        <SuggestionsList showSuggestions={showSuggestions}>
-          {filteredSuggestions.map((suggestion, index) => {
-            let className
-
-            if (index === activeSuggestion) {
-              className = 'active'
-            }
-
-            return (
-              <li className={className} key={suggestion} onClick={onClick}>
-                {suggestion}
-              </li>
-            )
-          })}
-        </SuggestionsList>
-      )
-    } else {
-      suggestionsListComponent = (
-        <div>
-          <em>No suggestions, you're on your own!</em>
-        </div>
-      )
-    }
-  }
- */
-
-  /* function onChange(event) {
-    setActiveSuggestion(0)
-    setShowSuggestions(true)
-    setUserInput(event.currentTarget.value)
-  }
-
-  function onClick(event) {
-    setActiveSuggestion(0)
-    setFilteredSuggestions([])
     setShowSuggestions(false)
+    setFilteredSuggestions([])
     setUserInput(event.currentTarget.innerText)
   }
-  function onKeyDown(event) {
-    if (event.keyCode === 13) {
-      setActiveSuggestion(0)
-      setShowSuggestions(false)
-      console.log(filteredSuggestions)
-      console.log(event.currentTarget.value)
-      console.log(filteredSuggestions[activeSuggestion])
-      setUserInput(
-        filteredSuggestions[activeSuggestion] || event.currentTarget.value
-        )
-        setFilteredSuggestions(() => filteredSuggestions[activeSuggestion])
-      console.log(activeSuggestion)
-    } else if (event.keyCode === 38) {
-      if (activeSuggestion === 0) {
-        return
-      }
-      setActiveSuggestion(activeSuggestion - 1)
-    } else if (event.keyCode === 40) {
-      if (activeSuggestion - 1 === filteredSuggestions.length) {
-        return
-      }
-      setActiveSuggestion(activeSuggestion + 1)
-    }
-  } */
 }
 
 const SearchField = styled.div`
@@ -207,7 +110,6 @@ const SearchIcon = styled.img`
 const SuggestionsList = styled.ul`
   position: absolute;
   width: 100%;
-  border: 1px solid #999;
   padding: 0;
   list-style: none;
   margin-top: 0;
@@ -215,7 +117,9 @@ const SuggestionsList = styled.ul`
   overflow-y: scroll;
   z-index: 1;
   background: #fff;
-  display: ${props => (props.suggestionsListOpen ? 'block' : 'none')};
+  cursor: pointer;
+  border: ${props => (props.showSuggestions ? '1px' : '0px')} solid #999;
+  display: ${props => (props.showSuggestions ? 'block' : 'none')};
   & li {
     padding: 0.5rem;
   }
