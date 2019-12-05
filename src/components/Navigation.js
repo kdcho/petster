@@ -8,7 +8,7 @@ export default function Navigation({
   handleSideNav,
   handleSearch,
   sideNavOpen,
-  animalprofile
+  animalprofile,
 }) {
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>

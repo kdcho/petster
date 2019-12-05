@@ -29,7 +29,6 @@ export default function Search({ getUserInput }) {
   useEffect(() => {
     setFilteredSuggestions(breedData.search(userInput))
     getUserInput(userInput)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInput])
 
   useEffect(() => {

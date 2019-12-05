@@ -16,8 +16,8 @@ export default function Gallery({
   return (
     <Container>
       <Navigation
-        handleSearch={event => handleSearch(event)}
         handleSideNav={handleSideNav}
+        handleSearch={handleSearch}
         sideNavOpen={sideNavOpen}
       />
       <Searchbar showSearch={showSearch}>
@@ -43,6 +43,7 @@ export default function Gallery({
     </Container>
   )
   function handleSearch(event) {
+    console.log('test')
     setshowSearch(event.target.id === 'BurgerBtn' ? false : !showSearch)
   }
 

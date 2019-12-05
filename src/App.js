@@ -3,7 +3,6 @@ import GlobalStyle from './styles/GlobalStyle'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Gallery from './Gallery.js'
 import AnimalProfile from './AnimalProfile'
-import Search from './components/Search'
 
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -22,8 +21,8 @@ firebase.initializeApp(firebaseConfig)
 export default function App() {
   const database = require('./database.json')
 
-  //let dataFromStorage = JSON.parse(localStorage.animal || {})
-  const [animal, setAnimal] = useState(database)
+  let dataFromStorage = JSON.parse(localStorage.animal || {})
+  const [animal, setAnimal] = useState(dataFromStorage)
   const [sideNavOpen, setSideNavOpen] = useState(false)
 
   return (
@@ -40,7 +39,7 @@ export default function App() {
         </Route>
         <Route path="/animalprofile/*">
           <AnimalProfile
-            animal={!animal || database}
+            animal={!animal || dataFromStorage}
             handleSideNav={handleSideNav}
             sideNavOpen={sideNavOpen}
           />

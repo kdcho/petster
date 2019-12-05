@@ -6,7 +6,7 @@
   </a>
 </p>
 
-> React App that serves as a bit animal shelter for people which are interested in adopting a dog
+> React App that serves as a big animal shelter for people which are interested in adopting a dog.
 
 ### 🏠 [Homepage](https://petster.now.sh)
 
