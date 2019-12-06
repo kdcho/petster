@@ -43,7 +43,6 @@ export default function Gallery({
     </Container>
   )
   function handleSearch(event) {
-    
     setshowSearch(event.target.id === 'BurgerBtn' ? false : !showSearch)
   }
 

@@ -21,7 +21,7 @@ export default function Search({ getUserInput }) {
 
   const [activeSuggestion, setActiveSuggestion] = useState(0)
   const [userInput, setUserInput] = useState('')
-  const [filteredSuggestions, setFilteredSuggestions] = useState([])
+  const [filteredSuggestions, setFilteredSuggestions] = useState(['test'])
   const [showSuggestions, setShowSuggestions] = useState(false)
 
   const breedData = new Fuse(breeds, options)
@@ -29,11 +29,11 @@ export default function Search({ getUserInput }) {
   useEffect(() => {
     setFilteredSuggestions(breedData.search(userInput))
     getUserInput(userInput)
+    setShowSuggestions(!userInput || enterKey ? false : true)
   }, [userInput])
 
   useEffect(() => {
-    if (enterKey) {
-      setShowSuggestions(false)
+    if (enterKey && filteredSuggestions[0]) {
       setActiveSuggestion(0)
       setUserInput(filteredSuggestions[activeSuggestion].name)
     } else if (arrowUpKey) {
