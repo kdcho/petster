@@ -8,7 +8,7 @@ export default function Navigation({
   handleSideNav,
   handleSearch,
   sideNavOpen,
-  animalprofile,
+  animalprofile
 }) {
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
@@ -18,8 +18,8 @@ export default function Navigation({
       </Header>
       <BurgerBtn
         onClick={event => {
-          handleSideNav()
           handleSearch(event)
+          handleSideNav()
         }}
         id="BurgerBtn"
         sideNavOpen={sideNavOpen}
