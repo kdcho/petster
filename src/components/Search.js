@@ -1,91 +1,138 @@
-import React, { useState, Fragment } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components/macro'
+import Fuse from 'fuse.js'
+import useKeyPress from './useKeyPress'
 
-export default function Search() {
+import deleteIcon from '../img/delete.svg'
+
+export default function Search({ getUserInput }) {
   const breeds = require('../breeds.json')
+  const options = {
+    shouldSort: true,
+    tokenize: true,
+    threshold: 0.4,
+    keys: ['name']
+  }
+
+  const enterKey = useKeyPress('Enter')
+  const arrowUpKey = useKeyPress('ArrowUp')
+  const arrowDownKey = useKeyPress('ArrowDown')
 
   const [activeSuggestion, setActiveSuggestion] = useState(0)
+  const [userInput, setUserInput] = useState('')
   const [filteredSuggestions, setFilteredSuggestions] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
-  const [userInput, setUserInput] = useState('')
 
-  function onChange(e) {
-    const userInput = e.currentTarget.value
+  const breedData = new Fuse(breeds, options)
 
-    setActiveSuggestion(0)
-    setFilteredSuggestions(
-      breeds.filter(
-        suggestion =>
-          suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-      )
-    )
-    setShowSuggestions(true)
-    setUserInput(e.currentTarget.value)
-  }
+  useEffect(() => {
+    setFilteredSuggestions(breedData.search(userInput))
+    getUserInput(userInput)
+  }, [userInput])
 
-  function onClick(e) {
-    setActiveSuggestion(0)
-    setFilteredSuggestions([])
-    setShowSuggestions(false)
-    setUserInput(e.currentTarget.innerText)
-  }
-  function onKeyDown(e) {
-    if (e.keyCode === 13) {
-      setActiveSuggestion(0)
+  useEffect(() => {
+    if (enterKey) {
       setShowSuggestions(false)
-      setUserInput(filteredSuggestions[activeSuggestion])
-    } else if (e.keyCode === 38) {
+      setActiveSuggestion(0)
+      setUserInput(filteredSuggestions[activeSuggestion].name)
+    } else if (arrowUpKey) {
       if (activeSuggestion === 0) {
         return
       }
       setActiveSuggestion(activeSuggestion - 1)
-    } else if (e.keyCode === 40) {
+    } else if (arrowDownKey) {
       if (activeSuggestion - 1 === filteredSuggestions.length) {
         return
       }
       setActiveSuggestion(activeSuggestion + 1)
     }
-  }
-
-  let suggestionsListComponent
-
-  if (showSuggestions && userInput) {
-    if (filteredSuggestions.length) {
-      suggestionsListComponent = (
-        <ul class="suggestions">
-          {filteredSuggestions.map((suggestion, index) => {
-            let className
-
-            // Flag the active suggestion with a class
-            if (index === activeSuggestion) {
-              className = 'suggestion-active'
-            }
-
-            return (
-              <li className={className} key={suggestion} onClick={onClick}>
-                {suggestion}
-              </li>
-            )
-          })}
-        </ul>
-      )
-    } else {
-      suggestionsListComponent = (
-        <div class="no-suggestions">
-          <em>No suggestions, you're on your own!</em>
-        </div>
-      )
-    }
-  }
+  }, [enterKey, arrowDownKey, arrowUpKey])
 
   return (
-    <Fragment>
+    <SearchField>
       <input
-        type="text"
-        onChange={onChange}
-        onKeyDown={onKeyDown}
+        onChange={event => {
+          setUserInput(event.currentTarget.value)
+          setShowSuggestions(true)
+        }}
         value={userInput}
+        type="text"
+        placeholder="Durchsuchen.."
       />
-      {suggestionsListComponent}
-    </Fragment>
+      <SearchIcon src={deleteIcon} onClick={() => setUserInput('')} />
+      <SuggestionsList showSuggestions={showSuggestions}>
+        {breedData.search(userInput).map((suggestedItem, index) => (
+          <li
+            onClick={onClick}
+            className={index === activeSuggestion ? 'active' : ''}
+            key={index + suggestedItem}
+          >
+            {suggestedItem.name}
+          </li>
+        ))}
+      </SuggestionsList>
+    </SearchField>
   )
+
+  function onClick(event) {
+    setShowSuggestions(false)
+    setFilteredSuggestions([])
+    setUserInput(event.currentTarget.innerText)
+  }
 }
+
+const SearchField = styled.div`
+  position: relative;
+  width: 214px;
+  align-self: center;
+
+  & input:first-of-type {
+    position: relative;
+    border: 1px solid #999;
+    padding: 5px 8px;
+    font-size: 14px;
+    width: 200px;
+    z-index: 1;
+  }
+`
+const SearchIcon = styled.img`
+  position: absolute;
+  height: 25px;
+  padding: 5px;
+  top: 9px;
+  right: 10px;
+  z-index: 1;
+  cursor: pointer;
+`
+
+const SuggestionsList = styled.ul`
+  position: absolute;
+  width: 100%;
+  padding: 0;
+  list-style: none;
+  margin-top: 0;
+  max-height: 143px;
+  overflow-y: scroll;
+  z-index: 1;
+  background: #fff;
+  cursor: pointer;
+  border: ${props => (props.showSuggestions ? '1px' : '0px')} solid #999;
+  display: ${props => (props.showSuggestions ? 'block' : 'none')};
+  & li {
+    padding: 0.5rem;
+  }
+
+  & li:hover,
+  .active {
+    background-color: #2a4755;
+    color: #fefefe;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  & li:not(:last-of-type) {
+    cursor: pointer;
+    border-bottom: 1px solid #999;
+  }
+`

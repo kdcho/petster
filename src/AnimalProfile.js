@@ -63,7 +63,7 @@ const ProfilePage = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   position: relative;
   margin-left: ${props => (props.sideNavOpen ? '300px' : 'none')};
   opacity: ${props => (props.sideNavOpen ? '0.4' : '1')};

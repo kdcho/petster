@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled, { css } from 'styled-components/macro'
 import { Link } from 'react-router-dom'
-
 import logo from '../img/logo.svg'
 import magnifier from '../img/magnifier_dark.svg'
 
@@ -11,28 +10,23 @@ export default function Navigation({
   sideNavOpen,
   animalprofile
 }) {
-  const [searchOpen, setSearchOpen] = useState(false)
-
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
       <Header animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
         <img src={logo} alt={'logo'} />
         <img onClick={handleSearch} src={magnifier} alt={'search'} />
       </Header>
-      <BurgerBtn onClick={handleSideNav} sideNavOpen={sideNavOpen} />
-      <Search animalprofile={animalprofile} searchOpen={searchOpen}>
-        <input placeholder="Durchsuchen..." required></input>
-      </Search>
+      <BurgerBtn
+        onClick={event => {
+          handleSearch(event)
+          handleSideNav()
+        }}
+        id="BurgerBtn"
+        sideNavOpen={sideNavOpen}
+      />
       <Sidebar sideNavOpen={sideNavOpen}>
         <MenuItem to={'/'} onClick={handleSideNav} sideNavOpen={sideNavOpen}>
           Gallery
-        </MenuItem>
-        <MenuItem
-          to={'/search'}
-          onClick={handleSideNav}
-          sideNavOpen={sideNavOpen}
-        >
-          Suche
         </MenuItem>
         <MenuItem
           to={'/profile'}
@@ -58,15 +52,11 @@ export default function Navigation({
       </Sidebar>
     </Container>
   )
-
-  function handleSearch() {
-    setSearchOpen(!searchOpen)
-  }
 }
 
 const Container = styled.div`
   width: 100%;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   height: ${props => (props.sideNavOpen ? '0' : '48px')};
   ${props =>
     props.animalprofile &&
@@ -80,7 +70,7 @@ const BurgerBtn = styled.div`
   height: 25px;
   width: 27px;
   position: fixed;
-  z-index: 4;
+  z-index: 2;
   left: 20px;
   top: 14px;
   border-color: ${props => (props.sideNavOpen ? 'transparent' : 'none')};
@@ -127,7 +117,7 @@ const Header = styled.div`
     height: 40px;
     margin-top: 5px;
     align-self: center;
-    transition: all 0.5s ease-in;
+    transition: all 0.3s ease-in;
     ${props =>
       props.animalprofile &&
       css`
@@ -136,11 +126,11 @@ const Header = styled.div`
   }
   & img:last-of-type {
     position: absolute;
-    height: 30px;
-    margin: 10px 10px 0 0;
+    height: 50px;
+    padding: 10px;
     align-self: end;
     cursor: pointer;
-    transition: all 0.5s ease-in;
+    transition: all 0.3s ease-in;
     opacity: ${props => (props.sideNavOpen ? '0' : '1')};
     ${props =>
       props.animalprofile &&
@@ -157,42 +147,22 @@ const Header = styled.div`
     `}
 `
 
-const Search = styled.div`
-  width: 100%;
-  background: #eaeaea;
-  text-align: center;
-  transition: all 0.3s ease-in;
-  margin-top: ${props => (props.searchOpen ? '48px' : '0')};
-  opacity: ${props => (props.searchOpen ? '1' : '0')};
-  & input {
-    outline: none;
-    margin: 7px;
-    padding: 5px 10px;
-    border: 0;
-    width: 40%;
-    border-radius: 5px;
-    box-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.2),
-      0 0 0rem rgba(0, 0, 0, 0.2);
-  }
-  ${props =>
-    props.animalprofile &&
-    css`
-      display: none;
-    `}
-`
-
 const Sidebar = styled.nav`
   list-style-type: none;
   overflow: hidden;
   background: #c6c4c1;
   height: 100vh;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   position: ${props => (props.sideNavOpen ? 'fixed' : 'unset')};
   padding: ${props => (props.sideNavOpen ? '50px 30px 30px 30px' : '0')};
   width: ${props => (props.sideNavOpen ? '300px' : '0')};
 `
 
-const MenuItem = styled(Link)`
+const LinkStyled = ({ sideNavOpen, children, ...rest }) => (
+  <Link {...rest}>{children}</Link>
+)
+
+const MenuItem = styled(LinkStyled)`
   display: block;
   word-break: keep-all;
   text-decoration: none;
@@ -202,7 +172,7 @@ const MenuItem = styled(Link)`
   height: 30px;
   margin: 30px 0;
   background: #eae8e5;
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
   opacity: ${props => (props.sideNavOpen ? '1' : '0')};
   width: ${props => (props.sideNavOpen ? '200px' : '0')};
   margin-left: ${props => (props.sideNavOpen ? '0' : '-40px')};
