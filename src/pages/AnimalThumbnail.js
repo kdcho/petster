@@ -2,8 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import maleImg from './img/male.svg'
-import femaleImg from './img/female.svg'
+import maleImg from '../img/male.svg'
+import femaleImg from '../img/female.svg'
 
 export default function AnimalThumbnail({ handleAnimal, ...props }) {
   return (

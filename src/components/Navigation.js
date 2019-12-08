@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components/macro'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import logo from '../img/logo.svg'
 import magnifier from '../img/magnifier_dark.svg'
 
@@ -8,18 +8,27 @@ export default function Navigation({
   handleSideNav,
   handleSearch,
   sideNavOpen,
-  animalprofile
+  animalprofile, 
+  userprofile
 }) {
+  const { pathname } = useLocation()
+
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
-      <Header animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
+      <Header animalprofile={animalprofile} userprofile={userprofile} sideNavOpen={sideNavOpen}>
         <img src={logo} alt={'logo'} />
         <img onClick={handleSearch} src={magnifier} alt={'search'} />
       </Header>
       <BurgerBtn
         onClick={event => {
-          handleSearch(event)
-          handleSideNav()
+          if (pathname.includes('animalprofile')) {
+            handleSideNav()
+          } else if (pathname.includes('profile')) {
+            handleSideNav()
+          } else {
+            handleSearch(event)
+            handleSideNav()
+          }
         }}
         id="BurgerBtn"
         sideNavOpen={sideNavOpen}
@@ -56,8 +65,7 @@ export default function Navigation({
 
 const Container = styled.div`
   width: 100%;
-  transition: all 0.3s ease-in;
-  height: ${props => (props.sideNavOpen ? '0' : '48px')};
+  height: 48px;
   ${props =>
     props.animalprofile &&
     css`
@@ -137,6 +145,11 @@ const Header = styled.div`
       css`
         opacity: 0;
       `}
+      ${props =>
+      props.userprofile &&
+      css`
+        opacity: 0;
+      `}
   }
 
   ${props =>
@@ -153,7 +166,6 @@ const Sidebar = styled.nav`
   background: #c6c4c1;
   height: 100vh;
   transition: all 0.3s ease-in;
-  position: ${props => (props.sideNavOpen ? 'fixed' : 'unset')};
   padding: ${props => (props.sideNavOpen ? '50px 30px 30px 30px' : '0')};
   width: ${props => (props.sideNavOpen ? '300px' : '0')};
 `

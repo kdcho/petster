@@ -2,13 +2,14 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
-import Navigation from './components/Navigation'
+import Navigation from '../components/Navigation'
 
-import maleImg from './img/male.svg'
-import femaleImg from './img/female.svg'
+import maleImg from '../img/male.svg'
+import femaleImg from '../img/female.svg'
 
 export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
   const gallery = [animal.profilePicture, ...animal.gallery]
+  console.log(animal)
 
   return (
     <Container>
@@ -40,7 +41,7 @@ export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
           <Registered>
             Am {animal.registered.substr(0, 5)} hinzugefügt
           </Registered>
-          <Contact>Kontaktinformationen anzeigen</Contact>
+          <Contact gender={animal.gender}>Kontaktinformationen anzeigen</Contact>
         </DetailsContainer>
       </ProfilePage>
     </Container>
@@ -100,7 +101,7 @@ const Gender = styled.img`
   background: #ffffff;
   z-index: 2;
   border: 3px solid
-    ${animal => (animal.gender === 'male' ? '#99ddfc' : '#f1919b')};
+    ${props => (props.gender === 'male' ? '#99ddfc' : '#f1919b')};
   padding: 3px;
   border-bottom-left-radius: 20px;
 `
@@ -159,12 +160,11 @@ const Registered = styled.p`
 `
 
 const Contact = styled.button`
-  display: absolute;
   border: none;
   outline: 0;
   padding: 8px;
   color: white;
-  background: ${animal => (animal.gender === 'male' ? '#99ddfc' : '#f1919b')};
+  background: ${props => (props.gender === 'male' ? '#99ddfc' : '#f1919b')};
   text-align: center;
   cursor: pointer;
   width: 100%;

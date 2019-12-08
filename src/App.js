@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import GlobalStyle from './styles/GlobalStyle'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Gallery from './Gallery.js'
-import AnimalProfile from './AnimalProfile'
+import Gallery from './pages/Gallery'
+import AnimalProfile from './pages/AnimalProfile'
+import UserProfile from './pages/UserProfile'
 
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -19,10 +20,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 export default function App() {
-  const database = require('./database.json')
+  const database = require('./dog_database.json')
+  const userDatabase = require('./user_database.json')
 
-  let dataFromStorage = JSON.parse(localStorage.animal || {})
-  const [animal, setAnimal] = useState(dataFromStorage)
+  let animalDataFromStorage = JSON.parse(localStorage.animal || {})
+  //let userDataFromStorage = JSON.parse(localStorage.user || {})
+  const [animal, setAnimal] = useState(animalDataFromStorage)
+  const [user, setUser] = useState(animalDataFromStorage)
   const [sideNavOpen, setSideNavOpen] = useState(false)
 
   return (
@@ -30,6 +34,7 @@ export default function App() {
       <GlobalStyle />
       <Switch>
         <Route exact path="/">
+          
           <Gallery
             database={database}
             handleAnimal={handleAnimal}
@@ -39,7 +44,15 @@ export default function App() {
         </Route>
         <Route path="/animalprofile/*">
           <AnimalProfile
-            animal={!animal || dataFromStorage}
+            animal={!animal || animalDataFromStorage}
+            handleSideNav={handleSideNav}
+            sideNavOpen={sideNavOpen}
+          />
+        </Route>
+        <Route path="/profile/">
+          <UserProfile
+            user={userDatabase[0]}
+            handleUser={handleUser}
             handleSideNav={handleSideNav}
             sideNavOpen={sideNavOpen}
           />
@@ -51,6 +64,10 @@ export default function App() {
   function handleAnimal(animal) {
     setAnimal(animal)
     localStorage.animal = JSON.stringify(animal)
+  }
+  function handleUser(user) {
+    setUser(user)
+    localStorage.user = JSON.stringify(user)
   }
 
   function handleSideNav() {

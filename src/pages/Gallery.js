@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import AnimalThumbnail from './AnimalThumbnail'
 import styled from 'styled-components/macro'
-import Navigation from './components/Navigation'
-import SearchInput from './components/Search'
+import Navigation from '../components/Navigation'
+import SearchInput from '../components/Search'
 
 export default function Gallery({
   database,
