@@ -17,7 +17,7 @@ export default function UserProfile({ user, handleSideNav, sideNavOpen }) {
         <Header>
           <ProfilePic>
             <PicWrapper>
-              <img src={user.picture} alt="profile"></img>
+              <img src={user.picture} alt="profile" />
               <CameraOuter onClick={() => setOpenUpload(!openUpload)}>
                 <CameraInner>
                   <i className="fa fa-camera" aria-hidden="true" />
@@ -85,11 +85,6 @@ const ProfilePic = styled.div`
   width: 200px;
   height: 200px;
   margin: 0 auto;
-  & img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
 `
 
 const PicWrapper = styled.div`
@@ -98,6 +93,11 @@ const PicWrapper = styled.div`
   border: 10px solid #5389a4;
   border-radius: 50%;
   overflow: hidden;
+  & img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
 `
 
 const CameraOuter = styled.span`

@@ -16,96 +16,100 @@ export default function PictureUpload() {
       let img = document.createElement('img')
       img.src = reader.result
       img.setAttribute('data-pic', 'picture')
+      img.download = 'newFile.jpg'
       document.getElementById('gallery').appendChild(img)
+
+      setFileAdded(!fileAdded)
     }
+
+    return (
+      <Container>
+        <Gallery
+          id="gallery"
+          contrast={contrast}
+          brightness={brightness}
+          sepia={sepia}
+        >
+          <ButtonWrapper fileAdded={fileAdded}>
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              ref={fileInput}
+              accept="image/*"
+              onChange={event => previewFile(event.target.files[0])}
+            />
+            <ChooseFile type="button" onClick={() => fileInput.current.click()}>
+              Foto auswählen
+            </ChooseFile>
+          </ButtonWrapper>
+        </Gallery>
+        <Editor>
+          <p>
+            Hier kannst du dein Bild vor dem hochladen noch bearbeiten. Sobald
+            du fertig bist kannst du speichern.
+          </p>
+          <RangeWrapper fileAdded={fileAdded}>
+            <label htmlFor="contrast">Contrast</label>
+            <input
+              onChange={event => setContrast(event.target.value)}
+              /* onMouseOver={event => setContrast(event.target.value)} */
+              name="contrast"
+              type="range"
+              value={contrast || '100'}
+              min="0"
+              max="200"
+            />
+          </RangeWrapper>
+          <RangeWrapper fileAdded={fileAdded}>
+            <label htmlFor="brightness">Brightness</label>
+            <input
+              onChange={event => setBrightness(event.target.value)}
+              /* onMouseOver={event => setBrightness(event.target.value)} */
+              name="brightness"
+              type="range"
+              value={brightness || '100'}
+              min="0"
+              max="200"
+            />
+          </RangeWrapper>
+          <RangeWrapper fileAdded={fileAdded}>
+            <label htmlFor="sepia">Sepia</label>
+            <input
+              onChange={event => setSepia(event.target.value)}
+              /* onMouseOver={event => setSepia(event.target.value)} */
+              name="sepia"
+              type="range"
+              value={sepia || '0'}
+              min="0"
+              max="200"
+            />
+          </RangeWrapper>
+        </Editor>
+      </Container>
+    )
   }
-
-  return (
-    <Container>
-      <Gallery
-        id="gallery"
-        contrast={contrast}
-        brightness={brightness}
-        sepia={sepia}
-      ></Gallery>
-      <FilePicker>
-        <ButtonWrapper>
-          <input
-            type="file"
-            style={{ display: 'none' }}
-            ref={fileInput}
-            accept="image/*"
-            onChange={event => previewFile(event.target.files[0])}
-          />
-          <ChooseFile
-            type="button"
-            onClick={() => {
-              fileInput.current.click()
-              setFileAdded(!fileAdded)
-            }}
-          >
-            Foto auswählen
-          </ChooseFile>
-        </ButtonWrapper>
-      </FilePicker>
-      <Editor fileAdded={fileAdded}>
-        <RangeWrapper>
-          <label htmlFor="contrast">Contrast</label>
-          <input
-            onChange={event => setContrast(event.target.value)}
-            /* onMouseOver={event => setContrast(event.target.value)} */
-            name="contrast"
-            type="range"
-            min="0"
-            max="200"
-          />
-        </RangeWrapper>
-        <RangeWrapper>
-          <label htmlFor="brightness">Brightness</label>
-          <input
-            onChange={event => setBrightness(event.target.value)}
-            /* onMouseOver={event => setBrightness(event.target.value)} */
-            name="brightness"
-            type="range"
-            min="0"
-            max="200"
-          />
-        </RangeWrapper>
-        <RangeWrapper>
-          <label htmlFor="sepia">Sepia</label>
-          <input
-            onChange={event => setSepia(event.target.value)}
-            /* onMouseOver={event => setSepia(event.target.value)} */
-            name="sepia"
-            type="range"
-            min="0"
-            max="200"
-          />
-        </RangeWrapper>
-      </Editor>
-    </Container>
-  )
 }
-
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-rows: 280px auto;
   justify-content: center;
-  position: absolute;
-  background-color: #efefef;
-  border-radius: 15px;
+  align-items: center;
+  position: fixed;
+  background-color: #2a4755;
   height: 100vh;
   width: 100%;
-  box-shadow: 0 8px 15px 0 rgba(black, 0.1);
-  z-index: 3;
+  z-index: 2;
 `
 const Gallery = styled.div`
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 100;
-
+  display: flex;
+  justify-self: center;
+  width: 240px;
+  height: 240px;
+  margin: 20px;
+  border: 10px solid #5389a4;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 0rem rgba(0, 0, 0, 0.2);
   img {
     width: 100%;
     height: 100%;
@@ -115,49 +119,41 @@ const Gallery = styled.div`
   }
 `
 
+const ButtonWrapper = styled.div`
+  display: ${props => (props.fileAdded ? 'none' : 'block')};
+  align-self: center;
+  margin: 0 auto;
+  overflow: hidden;
+  cursor: pointer;
+`
+
 const ChooseFile = styled.button`
   border: none;
   padding: 10px 20px;
   border-radius: 50px;
-  background: #2a4755;
-  color: white;
+  background: #efefef;
+  color: #000;
   font-size: 16px;
-  cursor: pointer;
-  transition: background-color 200ms ease-in;
-`
-
-const FilePicker = styled.form``
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  margin: 20px;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 40px;
-  position: relative;
-  overflow: hidden;
   cursor: pointer;
 `
 const Editor = styled.div`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
+  height: 100%;
+  width: 100vw;
+  max-width: 768px;
   padding: 20px;
-  box-sizing: border-box;
   background-color: #efefef;
-  margin-top: -10px;
-  transform: translateY(50px);
-  transition: all 0.3 ease-in;
-  opacity: ${props => (props.fileAdded ? '1' : '0')};
+  transition: all 0.3s ease-in;
 `
 
 const RangeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  opacity: ${props => (props.fileAdded ? '1' : '0')};
   input[type='range'] {
+    background: #efefef;
     height: 26px;
     -webkit-appearance: none;
     margin: 10px 0;

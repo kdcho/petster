@@ -72,7 +72,7 @@ const Container = styled.div`
       height: 0;
     `}
 `
-
+// Change px to an even number to prevent half pixels
 const BurgerBtn = styled.div`
   border-top: 2px solid #2a4755;
   height: 25px;
@@ -89,11 +89,11 @@ const BurgerBtn = styled.div`
     display: block;
     position: absolute;
     height: 2px;
-    width: ${props => (props.sideNavOpen ? '30px' : '27px')};
-    left: ${props => (props.sideNavOpen ? '-2px' : '0')};
     background: #2a4755;
     top: 8px;
     transition: all 0.3s ease-in;
+    width: ${props => (props.sideNavOpen ? '30px' : '27px')};
+    left: ${props => (props.sideNavOpen ? '-2px' : '0')};
     transform: ${props => (props.sideNavOpen ? 'rotate(45deg)' : 'none')};
   }
   &::after {
