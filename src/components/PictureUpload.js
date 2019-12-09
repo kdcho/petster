@@ -7,7 +7,6 @@ export default function PictureUpload() {
 
   const [contrast, setContrast] = useState(100)
   const [brightness, setBrightness] = useState(100)
-  const [hueRotate, setHueRotate] = useState(0)
   const [sepia, setSepia] = useState(0)
 
   const previewFile = file => {
@@ -23,6 +22,12 @@ export default function PictureUpload() {
 
   return (
     <Container>
+      <Gallery
+        id="gallery"
+        contrast={contrast}
+        brightness={brightness}
+        sepia={sepia}
+      ></Gallery>
       <FilePicker>
         <ButtonWrapper>
           <input
@@ -43,19 +48,12 @@ export default function PictureUpload() {
           </ChooseFile>
         </ButtonWrapper>
       </FilePicker>
-      <Gallery
-        id="gallery"
-        contrast={contrast}
-        brightness={brightness}
-        hueRotate={hueRotate}
-        sepia={sepia}
-      ></Gallery>
       <Editor fileAdded={fileAdded}>
         <RangeWrapper>
           <label htmlFor="contrast">Contrast</label>
           <input
             onChange={event => setContrast(event.target.value)}
-            onMouseOver={event => setContrast(event.target.value)}
+            /* onMouseOver={event => setContrast(event.target.value)} */
             name="contrast"
             type="range"
             min="0"
@@ -66,19 +64,8 @@ export default function PictureUpload() {
           <label htmlFor="brightness">Brightness</label>
           <input
             onChange={event => setBrightness(event.target.value)}
-            onMouseOver={event => setBrightness(event.target.value)}
+            /* onMouseOver={event => setBrightness(event.target.value)} */
             name="brightness"
-            type="range"
-            min="0"
-            max="200"
-          />
-        </RangeWrapper>
-        <RangeWrapper>
-          <label htmlFor="blur">Hue</label>
-          <input
-            onChange={event => setHueRotate(event.target.value)}
-            onMouseOver={event => setHueRotate(event.target.value)}
-            name="hue-rotate"
             type="range"
             min="0"
             max="200"
@@ -88,7 +75,7 @@ export default function PictureUpload() {
           <label htmlFor="sepia">Sepia</label>
           <input
             onChange={event => setSepia(event.target.value)}
-            onMouseOver={event => setSepia(event.target.value)}
+            /* onMouseOver={event => setSepia(event.target.value)} */
             name="sepia"
             type="range"
             min="0"
@@ -124,7 +111,7 @@ const Gallery = styled.div`
     height: 100%;
     object-fit: cover;
     filter: ${props =>
-      `contrast(${props.contrast}%) brightness(${props.brightness}%) hue-rotate(${props.hueRotate}deg) sepia(${props.sepia}%)`};
+      `contrast(${props.contrast}%) brightness(${props.brightness}%) sepia(${props.sepia}%)`};
   }
 `
 
@@ -143,6 +130,7 @@ const FilePicker = styled.form``
 
 const ButtonWrapper = styled.div`
   display: flex;
+  margin: 20px;
   flex-direction: column;
   align-items: center;
   margin-bottom: 40px;
@@ -152,15 +140,14 @@ const ButtonWrapper = styled.div`
 `
 const Editor = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 700px;
+  width: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background-color: white;
+  background-color: #efefef;
   margin-top: -10px;
-  z-index: 100;
-  opacity: 0;
   transform: translateY(50px);
   transition: all 0.3 ease-in;
   opacity: ${props => (props.fileAdded ? '1' : '0')};
@@ -169,12 +156,54 @@ const Editor = styled.div`
 const RangeWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20%;
-  & input {
-    height: 2px;
-    border-radius: 5px;
-    outline: none;
-    padding: 0;
+  width: 100%;
+  input[type='range'] {
+    height: 26px;
+    -webkit-appearance: none;
     margin: 10px 0;
+  }
+  input[type='range']:focus {
+    outline: none;
+  }
+  input[type='range']::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 14px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #50555c;
+    background: #50555c;
+    border-radius: 14px;
+    border: 0px solid #000000;
+  }
+  input[type='range']::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 20px;
+    width: 40px;
+    border-radius: 12px;
+    background: #529de1;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -3px;
+  }
+  input[type='range']:focus::-webkit-slider-runnable-track {
+    background: #50555c;
+  }
+  input[type='range']::-moz-range-track {
+    width: 100%;
+    height: 14px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #50555c;
+    background: #50555c;
+    border-radius: 14px;
+    border: 0px solid #000000;
+  }
+  input[type='range']::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 20px;
+    width: 40px;
+    border-radius: 12px;
+    background: #529de1;
+    cursor: pointer;
   }
 `
