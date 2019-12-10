@@ -8,14 +8,18 @@ export default function Navigation({
   handleSideNav,
   handleSearch,
   sideNavOpen,
-  animalprofile, 
+  animalprofile,
   userprofile
 }) {
   const { pathname } = useLocation()
 
   return (
     <Container animalprofile={animalprofile} sideNavOpen={sideNavOpen}>
-      <Header animalprofile={animalprofile} userprofile={userprofile} sideNavOpen={sideNavOpen}>
+      <Header
+        animalprofile={animalprofile}
+        userprofile={userprofile}
+        sideNavOpen={sideNavOpen}
+      >
         <img src={logo} alt={'logo'} />
         <img onClick={handleSearch} src={magnifier} alt={'search'} />
       </Header>
@@ -72,11 +76,10 @@ const Container = styled.div`
       height: 0;
     `}
 `
-// Change px to an even number to prevent half pixels
 const BurgerBtn = styled.div`
   border-top: 2px solid #2a4755;
   height: 25px;
-  width: 27px;
+  width: 28px;
   position: fixed;
   z-index: 2;
   left: 20px;
@@ -92,7 +95,7 @@ const BurgerBtn = styled.div`
     background: #2a4755;
     top: 8px;
     transition: all 0.3s ease-in;
-    width: ${props => (props.sideNavOpen ? '30px' : '27px')};
+    width: ${props => (props.sideNavOpen ? '30px' : '28px')};
     left: ${props => (props.sideNavOpen ? '-2px' : '0')};
     transform: ${props => (props.sideNavOpen ? 'rotate(45deg)' : 'none')};
   }
@@ -101,10 +104,10 @@ const BurgerBtn = styled.div`
     display: block;
     position: absolute;
     height: 2px;
-    width: ${props => (props.sideNavOpen ? '30px' : '27px')};
+    width: ${props => (props.sideNavOpen ? '30px' : '28px')};
     left: ${props => (props.sideNavOpen ? '-2px' : '0')};
     background: #2a4755;
-    bottom: ${props => (props.sideNavOpen ? '14px' : '3px')};
+    bottom: ${props => (props.sideNavOpen ? '13px' : '3px')};
     transition: all 0.3s ease-in;
     transform: ${props => (props.sideNavOpen ? 'rotate(135deg)' : 'none')};
   }
@@ -145,7 +148,7 @@ const Header = styled.div`
       css`
         opacity: 0;
       `}
-      ${props =>
+    ${props =>
       props.userprofile &&
       css`
         opacity: 0;
