@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Gallery from './pages/Gallery'
 import AnimalProfile from './pages/AnimalProfile'
 import UserProfile from './pages/UserProfile'
+import AddAnimal from './components/AddAnimal'
 
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -19,6 +20,19 @@ const firebaseConfig = {
   appId: '1:768467764431:web:2b48031a3d9970c45d63ba'
 }
 firebase.initializeApp(firebaseConfig)
+
+/* let db = firebase.firestore()
+db.collection("users").add({
+  first: "Alan",
+  last: "Turing",
+  born: 1912
+})
+.then(function(docRef) {
+  console.log("Document written with ID: ", docRef.id);
+})
+.catch(function(error) {
+  console.error("Error adding document: ", error);
+}); */
 
 const CLOUDNAME = process.env.REACT_APP_CLOUDINARY_CLOUDNAME
 const PRESET = process.env.REACT_APP_CLOUDINARY_PRESET
@@ -61,6 +75,9 @@ export default function App() {
             image={image}
             upload={event => upload(event)}
           />
+        </Route>
+        <Route path="/addanimal/">
+          <AddAnimal />
         </Route>
       </Switch>
     </Router>

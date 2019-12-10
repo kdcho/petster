@@ -58,7 +58,7 @@ export default function Search({ getUserInput }) {
         }}
         value={userInput}
         type="text"
-        placeholder="Durchsuchen.."
+        placeholder="Durchsuchen"
       />
       <SearchIcon src={deleteIcon} onClick={() => setUserInput('')} />
       <SuggestionsList showSuggestions={showSuggestions}>
@@ -84,15 +84,16 @@ export default function Search({ getUserInput }) {
 
 const SearchField = styled.div`
   position: relative;
-  width: 214px;
+  width: 100%;
   align-self: center;
 
   & input:first-of-type {
     position: relative;
+    text-align: center;
     border: 1px solid #999;
     padding: 5px 8px;
     font-size: 14px;
-    width: 200px;
+    width: 96.5%;
     z-index: 1;
   }
 `
@@ -109,6 +110,7 @@ const SearchIcon = styled.img`
 const SuggestionsList = styled.ul`
   position: absolute;
   width: 100%;
+  text-align: center;
   padding: 0;
   list-style: none;
   margin-top: 0;
