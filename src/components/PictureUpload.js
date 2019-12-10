@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 
-export default function PictureUpload() {
+export default function PictureUpload({ image, upload }) {
   const fileInput = useRef()
   const [fileAdded, setFileAdded] = useState(false)
 
@@ -10,7 +10,7 @@ export default function PictureUpload() {
   const [sepia, setSepia] = useState(0)
 
   const previewFile = file => {
-    let reader = new FileReader()
+    /*     let reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = function() {
       let img = document.createElement('img')
@@ -18,76 +18,83 @@ export default function PictureUpload() {
       img.setAttribute('data-pic', 'picture')
       img.download = 'newFile.jpg'
       document.getElementById('gallery').appendChild(img)
-
-      setFileAdded(!fileAdded)
-    }
-
-    return (
-      <Container>
-        <Gallery
-          id="gallery"
-          contrast={contrast}
-          brightness={brightness}
-          sepia={sepia}
-        >
-          <ButtonWrapper fileAdded={fileAdded}>
-            <input
-              type="file"
-              style={{ display: 'none' }}
-              ref={fileInput}
-              accept="image/*"
-              onChange={event => previewFile(event.target.files[0])}
-            />
-            <ChooseFile type="button" onClick={() => fileInput.current.click()}>
-              Foto auswählen
-            </ChooseFile>
-          </ButtonWrapper>
-        </Gallery>
-        <Editor>
-          <p>
-            Hier kannst du dein Bild vor dem hochladen noch bearbeiten. Sobald
-            du fertig bist kannst du speichern.
-          </p>
-          <RangeWrapper fileAdded={fileAdded}>
-            <label htmlFor="contrast">Contrast</label>
-            <input
-              onChange={event => setContrast(event.target.value)}
-              /* onMouseOver={event => setContrast(event.target.value)} */
-              name="contrast"
-              type="range"
-              value={contrast || '100'}
-              min="0"
-              max="200"
-            />
-          </RangeWrapper>
-          <RangeWrapper fileAdded={fileAdded}>
-            <label htmlFor="brightness">Brightness</label>
-            <input
-              onChange={event => setBrightness(event.target.value)}
-              /* onMouseOver={event => setBrightness(event.target.value)} */
-              name="brightness"
-              type="range"
-              value={brightness || '100'}
-              min="0"
-              max="200"
-            />
-          </RangeWrapper>
-          <RangeWrapper fileAdded={fileAdded}>
-            <label htmlFor="sepia">Sepia</label>
-            <input
-              onChange={event => setSepia(event.target.value)}
-              /* onMouseOver={event => setSepia(event.target.value)} */
-              name="sepia"
-              type="range"
-              value={sepia || '0'}
-              min="0"
-              max="200"
-            />
-          </RangeWrapper>
-        </Editor>
-      </Container>
-    )
+ */
+    setFileAdded(!fileAdded)
   }
+
+  return (
+    <Container>
+      <Gallery
+        id="gallery"
+        contrast={contrast}
+        brightness={brightness}
+        sepia={sepia}
+      >
+        <ButtonWrapper fileAdded={fileAdded}>
+          <ChooseFile type="button" onClick={() => fileInput.current.click()}>
+            Foto auswählen
+          </ChooseFile>
+        </ButtonWrapper>
+        {image ? (
+          <img src={image} alt="" />
+        ) : (
+          <input
+            type="file"
+            name="file"
+            style={{ display: 'none' }}
+            ref={fileInput}
+            accept="image/*"
+            onChange={event => {
+              upload(event)
+              previewFile(event.target.files[0])
+            }}
+          />
+        )}
+      </Gallery>
+      <Editor>
+        <p>
+          Hier kannst du dein Bild vor dem hochladen noch bearbeiten. Sobald du
+          fertig bist kannst du speichern.
+        </p>
+        <RangeWrapper fileAdded={fileAdded}>
+          <label htmlFor="contrast">Contrast</label>
+          <input
+            onChange={event => setContrast(event.target.value)}
+            /* onMouseOver={event => setContrast(event.target.value)} */
+            name="contrast"
+            type="range"
+            value={contrast || '100'}
+            min="0"
+            max="200"
+          />
+        </RangeWrapper>
+        <RangeWrapper fileAdded={fileAdded}>
+          <label htmlFor="brightness">Brightness</label>
+          <input
+            onChange={event => setBrightness(event.target.value)}
+            /* onMouseOver={event => setBrightness(event.target.value)} */
+            name="brightness"
+            type="range"
+            value={brightness || '100'}
+            min="0"
+            max="200"
+          />
+        </RangeWrapper>
+        <RangeWrapper fileAdded={fileAdded}>
+          <label htmlFor="sepia">Sepia</label>
+          <input
+            onChange={event => setSepia(event.target.value)}
+            /* onMouseOver={event => setSepia(event.target.value)} */
+            name="sepia"
+            type="range"
+            value={sepia || '0'}
+            min="0"
+            max="200"
+          />
+        </RangeWrapper>
+      </Editor>
+    </Container>
+  )
 }
 const Container = styled.div`
   display: grid;

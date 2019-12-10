@@ -3,7 +3,13 @@ import styled from 'styled-components/macro'
 import Navigation from '../components/Navigation'
 import PictureUpload from '../components/PictureUpload'
 
-export default function UserProfile({ user, handleSideNav, sideNavOpen }) {
+export default function UserProfile({
+  user,
+  handleSideNav,
+  sideNavOpen,
+  image,
+  upload
+}) {
   const [openUpload, setOpenUpload] = useState(false)
 
   return (
@@ -53,7 +59,11 @@ export default function UserProfile({ user, handleSideNav, sideNavOpen }) {
           </Contact>
         </DetailsContainer>
       </Profile>
-      {openUpload ? <PictureUpload></PictureUpload> : ''}
+      {openUpload ? (
+        <PictureUpload image={image} upload={upload}></PictureUpload>
+      ) : (
+        ''
+      )}
     </Container>
   )
 }
