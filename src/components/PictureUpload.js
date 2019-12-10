@@ -9,19 +9,6 @@ export default function PictureUpload({ image, upload }) {
   const [brightness, setBrightness] = useState(100)
   const [sepia, setSepia] = useState(0)
 
-  const previewFile = file => {
-    /*     let reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onloadend = function() {
-      let img = document.createElement('img')
-      img.src = reader.result
-      img.setAttribute('data-pic', 'picture')
-      img.download = 'newFile.jpg'
-      document.getElementById('gallery').appendChild(img)
- */
-    setFileAdded(!fileAdded)
-  }
-
   return (
     <Container>
       <Gallery
@@ -36,7 +23,7 @@ export default function PictureUpload({ image, upload }) {
           </ChooseFile>
         </ButtonWrapper>
         {image ? (
-          <img src={image} alt="" />
+          <img src={image} alt="profile" />
         ) : (
           <input
             type="file"
@@ -46,7 +33,7 @@ export default function PictureUpload({ image, upload }) {
             accept="image/*"
             onChange={event => {
               upload(event)
-              previewFile(event.target.files[0])
+              setFileAdded(!fileAdded)
             }}
           />
         )}
@@ -60,7 +47,6 @@ export default function PictureUpload({ image, upload }) {
           <label htmlFor="contrast">Contrast</label>
           <input
             onChange={event => setContrast(event.target.value)}
-            /* onMouseOver={event => setContrast(event.target.value)} */
             name="contrast"
             type="range"
             value={contrast || '100'}
@@ -72,7 +58,6 @@ export default function PictureUpload({ image, upload }) {
           <label htmlFor="brightness">Brightness</label>
           <input
             onChange={event => setBrightness(event.target.value)}
-            /* onMouseOver={event => setBrightness(event.target.value)} */
             name="brightness"
             type="range"
             value={brightness || '100'}
@@ -84,7 +69,6 @@ export default function PictureUpload({ image, upload }) {
           <label htmlFor="sepia">Sepia</label>
           <input
             onChange={event => setSepia(event.target.value)}
-            /* onMouseOver={event => setSepia(event.target.value)} */
             name="sepia"
             type="range"
             value={sepia || '0'}
@@ -96,6 +80,7 @@ export default function PictureUpload({ image, upload }) {
     </Container>
   )
 }
+
 const Container = styled.div`
   display: grid;
   grid-template-rows: 280px auto;

@@ -29,7 +29,6 @@ export default function App() {
   const [image, setImage] = useState('')
 
   let animalDataFromStorage = JSON.parse(localStorage.animal || {})
-  //let userDataFromStorage = JSON.parse(localStorage.user || {})
   const [animal, setAnimal] = useState(animalDataFromStorage)
   const [user, setUser] = useState(animalDataFromStorage)
   const [sideNavOpen, setSideNavOpen] = useState(false)
@@ -77,8 +76,8 @@ export default function App() {
     axios
       .post(url, formData, {
         headers: {
-          'Content-type': 'multipart/form-data',
-        },
+          'Content-type': 'multipart/form-data'
+        }
       })
       .then(onImageSave)
       .catch(err => console.error(err))
