@@ -1,13 +1,18 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled, { keyframes } from 'styled-components/macro'
 import Navigation from './Navigation'
 
-export default function AddAnimal() {
+import background from '../img/background_dog1.jpg'
+
+export default function PostAd() {
   return (
     <>
       <Navigation />
-      <AddAnimalForm>
-        <div class="container subcontainer">
+      <BackgroundImgWrapper>
+        <img src={background} alt="background" />
+      </BackgroundImgWrapper>
+      <PostAdForm>
+        <div class="container ">
           <input type="text" name="name" placeholder="Name" />
         </div>
         <div class="container subcontainer">
@@ -16,40 +21,46 @@ export default function AddAnimal() {
         <div class="container style2">
           <input type="radio" id="style2radio1" name="style2radio1" />
           <label for="style2radio1"></label>
-          <span>Wochen</span>
           <input type="radio" id="style2radio2" name="style2radio1" />
           <label for="style2radio2"></label>
-          <span>Jahre</span>
         </div>
         <div class="container subcontainer">
           <input type="file" alt="profile" />
         </div>
-      </AddAnimalForm>
+      </PostAdForm>
     </>
   )
 }
+const animate = keyframes`
+from {
+  filter: blur(0);
+}
 
-const AddAnimalForm = styled.form`
-  body {
-    background: #2c3e50;
-    padding: 20px 0px;
-    font-family: 'ABeeZee', sans-serif;
-    font-size: 15px;
-  }
+to {
+  filter: blur(20px);
+}`
 
-  h1 {
-    text-align: center;
-    color: #fff;
-    font-size: 25px;
-    margin-bottom: 20px;
+const BackgroundImgWrapper = styled.div`
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  z-index: -1;
+  animation: ${animate} 1s linear forwards;
+
+  & img {
+    transform: scale(1.1);
   }
+`
+
+const PostAdForm = styled.form`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  padding: 20px;
 
   .container {
-    width: 260px;
-    margin: 0 auto;
     border-bottom: 4px solid #3498db;
     padding: 15px 0px;
-    @include box-sizing;
   }
 
   .subcontainer {

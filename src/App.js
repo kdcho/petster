@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Gallery from './pages/Gallery'
 import AnimalProfile from './pages/AnimalProfile'
 import UserProfile from './pages/UserProfile'
-import AddAnimal from './components/AddAnimal'
+import PostAd from './components/PostAd'
 
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -76,8 +76,8 @@ export default function App() {
             upload={event => upload(event)}
           />
         </Route>
-        <Route path="/addanimal/">
-          <AddAnimal />
+        <Route path="/postad/">
+          <PostAd />
         </Route>
       </Switch>
     </Router>
