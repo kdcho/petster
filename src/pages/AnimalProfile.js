@@ -9,7 +9,6 @@ import femaleImg from '../img/female.svg'
 
 export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
   const gallery = [animal.profilePicture, ...animal.gallery]
-  console.log(animal)
 
   return (
     <Container>
@@ -41,7 +40,9 @@ export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
           <Registered>
             Am {animal.registered.substr(0, 5)} hinzugefügt
           </Registered>
-          <Contact gender={animal.gender}>Kontaktinformationen anzeigen</Contact>
+          <Contact gender={animal.gender}>
+            Kontaktinformationen anzeigen
+          </Contact>
         </DetailsContainer>
       </ProfilePage>
     </Container>
@@ -165,7 +166,7 @@ const Contact = styled.button`
   outline: 0;
   padding: 8px;
   color: white;
-  background: ${props => (props.gender === 'male' ? '#99ddfc' : '#f1919b')};
+  background: #2a4755;
   text-align: center;
   cursor: pointer;
   width: 100%;
