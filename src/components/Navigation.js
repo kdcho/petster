@@ -81,7 +81,7 @@ const BurgerBtn = styled.div`
   height: 25px;
   width: 28px;
   position: fixed;
-  z-index: 2;
+  z-index: 5;
   left: 20px;
   top: 14px;
   border-color: ${props => (props.sideNavOpen ? 'transparent' : 'none')};

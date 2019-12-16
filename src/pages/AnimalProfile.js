@@ -119,7 +119,7 @@ const DetailsContainer = styled.div`
 const Name = styled.h1`
   justify-self: start;
   margin: 10px 0 10px 10px;
-  font-size: 40px;
+  font-size: 30px;
   grid-column: 1 / span 4;
 `
 
@@ -127,6 +127,7 @@ const Subtitle = styled.div`
   justify-self: start;
   margin: 10px 0 10px 10px;
   grid-column: 1 / span 4;
+  font-size: 14px;
 `
 
 const Breed = styled.h2`

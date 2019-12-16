@@ -24,7 +24,7 @@ export default function UserProfile({
           <ProfilePic>
             <PicWrapper>
               <img src={user.picture} alt="profile" />
-              <CameraOuter onClick={() => setOpenUpload(!openUpload)}>
+              <CameraOuter /* onClick={() => setOpenUpload(!openUpload)} */>
                 <CameraInner>
                   <i className="fa fa-camera" aria-hidden="true" />
                 </CameraInner>
@@ -81,7 +81,7 @@ const Profile = styled.div`
   grid-template-rows: 280px auto;
   width: 100%;
   transition: all 0.3s ease-in;
-  position: ${props => (props.sideNavOpen ? 'fixed' : 'unset')};
+  xposition: ${props => (props.sideNavOpen ? 'fixed' : 'unset')};
   margin-left: ${props => (props.sideNavOpen ? '300px' : 'unset')};
   opacity: ${props => (props.sideNavOpen ? '0.4' : '1')};
 `
