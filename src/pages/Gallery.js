@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import AnimalThumbnail from './AnimalThumbnail'
 import styled from 'styled-components/macro'
-import Navigation from './components/Navigation'
-import SearchInput from './components/Search'
+import Navigation from '../components/Navigation'
+import SearchInput from '../components/Search'
 
 export default function Gallery({
   database,
@@ -21,7 +21,7 @@ export default function Gallery({
         sideNavOpen={sideNavOpen}
       />
       <Searchbar showSearch={showSearch}>
-        <SearchInput getUserInput={getUserInput} />
+        <SearchInput getUserInput={getUserInput} gallery />
       </Searchbar>
       <GalleryBox sideNavOpen={sideNavOpen}>
         {database
@@ -43,7 +43,6 @@ export default function Gallery({
     </Container>
   )
   function handleSearch(event) {
-    
     setshowSearch(event.target.id === 'BurgerBtn' ? false : !showSearch)
   }
 

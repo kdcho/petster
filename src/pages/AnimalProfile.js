@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
-import Navigation from './components/Navigation'
+import Navigation from '../components/Navigation'
 
-import maleImg from './img/male.svg'
-import femaleImg from './img/female.svg'
+import maleImg from '../img/male.svg'
+import femaleImg from '../img/female.svg'
 
 export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
   const gallery = [animal.profilePicture, ...animal.gallery]
@@ -40,7 +40,9 @@ export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
           <Registered>
             Am {animal.registered.substr(0, 5)} hinzugefügt
           </Registered>
-          <Contact>Kontaktinformationen anzeigen</Contact>
+          <Contact gender={animal.gender}>
+            Kontaktinformationen anzeigen
+          </Contact>
         </DetailsContainer>
       </ProfilePage>
     </Container>
@@ -63,8 +65,8 @@ const ProfilePage = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  position: relative;
   transition: all 0.3s ease-in;
+  position: relative;
   margin-left: ${props => (props.sideNavOpen ? '300px' : 'none')};
   opacity: ${props => (props.sideNavOpen ? '0.4' : '1')};
 `
@@ -100,7 +102,7 @@ const Gender = styled.img`
   background: #ffffff;
   z-index: 2;
   border: 3px solid
-    ${animal => (animal.gender === 'male' ? '#99ddfc' : '#f1919b')};
+    ${props => (props.gender === 'male' ? '#99ddfc' : '#f1919b')};
   padding: 3px;
   border-bottom-left-radius: 20px;
 `
@@ -118,7 +120,7 @@ const DetailsContainer = styled.div`
 const Name = styled.h1`
   justify-self: start;
   margin: 10px 0 10px 10px;
-  font-size: 40px;
+  font-size: 30px;
   grid-column: 1 / span 4;
 `
 
@@ -126,6 +128,7 @@ const Subtitle = styled.div`
   justify-self: start;
   margin: 10px 0 10px 10px;
   grid-column: 1 / span 4;
+  font-size: 14px;
 `
 
 const Breed = styled.h2`
@@ -159,12 +162,11 @@ const Registered = styled.p`
 `
 
 const Contact = styled.button`
-  display: absolute;
   border: none;
   outline: 0;
   padding: 8px;
   color: white;
-  background: ${animal => (animal.gender === 'male' ? '#99ddfc' : '#f1919b')};
+  background: #2a4755;
   text-align: center;
   cursor: pointer;
   width: 100%;
