@@ -21,7 +21,7 @@ export default function Gallery({
         sideNavOpen={sideNavOpen}
       />
       <Searchbar showSearch={showSearch}>
-        <SearchInput getUserInput={getUserInput} />
+        <SearchInput getUserInput={getUserInput} gallery />
       </Searchbar>
       <GalleryBox sideNavOpen={sideNavOpen}>
         {database

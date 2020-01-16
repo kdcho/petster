@@ -6,7 +6,7 @@ import useKeyPress from './useKeyPress'
 
 import deleteIcon from '../img/delete.svg'
 
-export default function Search({ getUserInput }) {
+export default function Search({ getUserInput, gallery }) {
   const breeds = require('../breeds.json')
   const options = {
     shouldSort: true,
@@ -21,21 +21,22 @@ export default function Search({ getUserInput }) {
 
   const [activeSuggestion, setActiveSuggestion] = useState(0)
   const [userInput, setUserInput] = useState('')
-  const [filteredSuggestions, setFilteredSuggestions] = useState(['test'])
+  const [filteredSuggestions, setFilteredSuggestions] = useState([''])
   const [showSuggestions, setShowSuggestions] = useState(false)
-
   const breedData = new Fuse(breeds, options)
 
   useEffect(() => {
     setFilteredSuggestions(breedData.search(userInput))
-    getUserInput(userInput)
-    setShowSuggestions(!userInput || enterKey ? false : true)
+    if (getUserInput) {
+      getUserInput(userInput)
+    }
   }, [userInput])
 
   useEffect(() => {
     if (enterKey && filteredSuggestions[0]) {
       setActiveSuggestion(0)
       setUserInput(filteredSuggestions[activeSuggestion].name)
+      setShowSuggestions(!userInput || enterKey ? false : true)
     } else if (arrowUpKey) {
       if (activeSuggestion === 0) {
         return
@@ -56,15 +57,20 @@ export default function Search({ getUserInput }) {
           setUserInput(event.currentTarget.value)
           setShowSuggestions(true)
         }}
+        onBlur={onBlur}
         value={userInput}
         type="text"
-        placeholder="Durchsuchen"
+        placeholder={gallery ? 'Durchsuchen' : ''}
       />
-      <SearchIcon src={deleteIcon} onClick={() => setUserInput('')} />
+      {gallery ? (
+        <SearchIcon src={deleteIcon} onClick={() => setUserInput('')} />
+      ) : (
+        ''
+      )}
       <SuggestionsList showSuggestions={showSuggestions}>
         {breedData.search(userInput).map((suggestedItem, index) => (
           <li
-            onClick={onClick}
+            onClick={() => onClick(index)}
             className={index === activeSuggestion ? 'active' : ''}
             key={index + suggestedItem}
           >
@@ -75,19 +81,26 @@ export default function Search({ getUserInput }) {
     </SearchField>
   )
 
-  function onClick(event) {
+  function onClick(index) {
     setShowSuggestions(false)
     setFilteredSuggestions([])
-    setUserInput(event.currentTarget.innerText)
+    setActiveSuggestion(0)
+    setUserInput(filteredSuggestions[index].name)
+  }
+
+  function onBlur() {
+    setTimeout(() => {
+      setShowSuggestions(false)
+    }, 100)
   }
 }
 
-const SearchField = styled.div`
+export const SearchField = styled.div`
   position: relative;
   width: 100%;
   align-self: center;
 
-  & input:first-of-type {
+  & input {
     position: relative;
     text-align: center;
     border: 1px solid #999;
@@ -114,7 +127,7 @@ const SuggestionsList = styled.ul`
   padding: 0;
   list-style: none;
   margin-top: 0;
-  max-height: 143px;
+  max-height: 102px;
   overflow-y: scroll;
   z-index: 1;
   background: #fff;
