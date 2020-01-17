@@ -105,7 +105,7 @@ export default function PostAd({ firebase }) {
         console.error('Error adding document: ', error)
       })
 
-    event.target.form.reset()
+    event.target.reset()
   }
 
   function getTagsAsArray() {
