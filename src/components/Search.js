@@ -59,8 +59,10 @@ export default function Search({ getUserInput, gallery }) {
         }}
         onBlur={onBlur}
         value={userInput}
+        name="breed"
         type="text"
         placeholder={gallery ? 'Durchsuchen' : ''}
+        required
       />
       {gallery ? (
         <SearchIcon src={deleteIcon} onClick={() => setUserInput('')} />

@@ -22,10 +22,20 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 /* let db = firebase.firestore()
-db.collection("users").add({
-  first: "Alan",
-  last: "Turing",
-  born: 1912
+db.collection("dogs").add({
+    isAvailable: true,
+    profilePicture: "https://i.imgur.com/zgC3qY6.jpg",
+    gallery: [
+      "https://i.imgur.com/UEaT23h.jpg",
+      "https://i.imgur.com/BpHnLcP.jpg"
+    ],
+    age: 23,
+    name: "Trisha",
+    gender: "female",
+  breed: "Terrier",
+    registered: "29.10.2019",
+    description: "Die kleine Maus sucht ein schönes Zuhause. Sie kann sitz, platz, bleib und den Ball holen. Derzeit lebt Sie mit einem Mini Bulli zusammen und Kinder kennt sie auch. Sie ist 5-6 monate alt, geimpft und entwurmt.",
+    tags: ["minim", "tempor", "Lorem"]
 })
 .then(function(docRef) {
   console.log("Document written with ID: ", docRef.id);
@@ -73,17 +83,17 @@ export default function App() {
             handleSideNav={handleSideNav}
             sideNavOpen={sideNavOpen}
             image={image}
-            upload={event => upload(event)}
+            upload={event => uploadImage(event)}
           />
         </Route>
         <Route path="/postad/">
-          <PostAd />
+          <PostAd firebase={firebase} />
         </Route>
       </Switch>
     </Router>
   )
 
-  function upload(event) {
+  function uploadImage(event) {
     const url = `https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`
 
     const formData = new FormData()

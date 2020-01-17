@@ -49,6 +49,13 @@ export default function Navigation({
           Eigenes Profil
         </MenuItem>
         <MenuItem
+          to={'/postAd'}
+          onClick={handleSideNav}
+          sideNavOpen={sideNavOpen}
+        >
+          Hund hinzufügen
+        </MenuItem>
+        <MenuItem
           to={'/settings'}
           onClick={handleSideNav}
           sideNavOpen={sideNavOpen}
@@ -205,5 +212,9 @@ const MenuItem = styled(LinkStyled)`
 
   &:nth-of-type(5) {
     margin-left: ${props => (props.sideNavOpen ? '0' : '-120px')};
+  }
+
+  &:nth-of-type(6) {
+    margin-left: ${props => (props.sideNavOpen ? '0' : '-140px')};
   }
 `

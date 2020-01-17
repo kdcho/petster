@@ -1,51 +1,34 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components/macro'
-import Search from '../components/Search'
+import SearchInput from '../components/Search'
+import { Link } from 'react-router-dom'
 
 import background from '../img/background_x667.jpg'
 import backgroundBlurred from '../img/background_x667_blurred.jpg'
 
-export default function PostAd() {
+export default function PostAd({ firebase }) {
   return (
     <>
       <BackgroundImgWrapper>
         <img src={background} alt="background" />
         <img src={backgroundBlurred} alt="" />
       </BackgroundImgWrapper>
-      <NavigationWrapper>
-        <i class="fas fa-arrow-left"></i>
+      <NavigationWrapper to={'/'}>
+        <i className="fas fa-arrow-left"></i>
       </NavigationWrapper>
-      <PostAdForm>
-        <h1>Neuen Hund hinzufügen</h1>
+      <PostAdForm onSubmit={event => addAnimal(event)}>
+        <h1>Hund hinzufügen</h1>
         <p>
           <label htmlFor="name">NAME</label>
-          <input id="name" name="name" type="text" required />
+          <input id="name" name="name" type="text" required minLength="3" />
         </p>
         <p>
           <label htmlFor="age">ALTER</label>
-          <input id="age" name="age" type="number" required />
-        </p>
-        <p>
-          <label id="age" htmlFor="age-format-w">
-            <i />
-            IN WOCHEN
-          </label>
-          <input
-            id="age-format-w"
-            name="age-format"
-            type="radio"
-            value="weeks"
-            defaultChecked
-          />
-          <label id="age" htmlFor="age-format-y">
-            IN JAHREN
-          </label>
-          <input
-            id="age-format-y"
-            name="age-format"
-            type="radio"
-            value="years"
-          />
+          <select name="age" id="age" required>
+            <option value="jünger als 8 Wochen">jünger als 8 Wochen</option>
+            <option value="älter als 8 Wochen">älter als 8 Wochen</option>
+            <option value="älter als 12 Wochen">älter als 12 Wochen</option>
+          </select>
         </p>
         <p>
           <label htmlFor="gender">MÄNNLICH</label>
@@ -53,27 +36,33 @@ export default function PostAd() {
             id="gender"
             name="gender"
             type="radio"
-            value="Männlich"
+            value="male"
             defaultChecked
             required
           />
           <label htmlFor="gender">WEIBLICH</label>
-          <input id="gender" name="gender" type="radio" required />
+          <input
+            id="gender"
+            name="gender"
+            type="radio"
+            value="female"
+            required
+          />
         </p>
         <div>
           <label htmlFor="breed">RASSE</label>
-          <SearchInput postAd />
+          <SearchInput postAd required />
         </div>
+        <h4>EIGENSCHAFTEN</h4>
         <p>
-          <h4>EIGENSCHAFTEN</h4>
           <label htmlFor="tags">KLEIN</label>
-          <input id="tags" name="tags" type="checkbox" />
+          <input id="tags" name="tags" type="checkbox" value="KLEIN" />
           <label htmlFor="tags">GROß</label>
-          <input id="tags" name="tags" type="checkbox" />
+          <input id="tags" name="tags" type="checkbox" value="GROß" />
           <label htmlFor="tags">SCHEU</label>
-          <input id="tags" name="tags" type="checkbox" />
+          <input id="tags" name="tags" type="checkbox" value="SCHEU" />
           <label htmlFor="tags">AUSDAUERND</label>
-          <input id="tags" name="tags" type="checkbox" />
+          <input id="tags" name="tags" type="checkbox" value="AUSDAUERND" />
         </p>
         <p>
           <label htmlFor="desc">BESCHREIBUNG</label>
@@ -84,12 +73,47 @@ export default function PostAd() {
             required
           />
         </p>
-        <p>
-          <button value="submit">HINZUFÜGEN</button>
-        </p>
+        <SubmitBtn type="submit" value="HINZUFÜGEN" />
       </PostAdForm>
     </>
   )
+
+  function addAnimal(event) {
+    event.preventDefault()
+    const newAnimal = Object.fromEntries(new FormData(event.target))
+    newAnimal.tags = [...getTagsAsArray()]
+
+    let docData = {
+      isAvailable: true,
+      age: newAnimal.age,
+      name: newAnimal.name,
+      gender: newAnimal.gender,
+      breed: newAnimal.breed,
+      registered: firebase.firestore.Timestamp.fromDate(new Date()),
+      desc: newAnimal.desc,
+      tags: newAnimal.tags
+    }
+
+    if (event.target) console.log('true')
+    let db = firebase.firestore()
+    db.collection('dogs')
+      .add(docData)
+      .then(function(docRef) {
+        console.log('Document written with ID: ', docRef.id)
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error)
+      })
+
+    event.target.form.reset()
+  }
+
+  function getTagsAsArray() {
+    const tags = Array.from(
+      document.querySelectorAll('[name=tags]:checked')
+    ).map(tag => tag.value)
+    return tags
+  }
 }
 
 const blur = keyframes`
@@ -114,7 +138,7 @@ const BackgroundImgWrapper = styled.div`
   }
 `
 
-const NavigationWrapper = styled.span`
+const NavigationWrapper = styled(Link)`
   & i {
     padding: 20px 20px 0 20px;
     color: #2a4755;
@@ -143,7 +167,17 @@ const PostAdForm = styled.form`
     margin: 0 0 20px 0;
   }
 
-  input {
+  div {
+    margin: 14px 0;
+    > div {
+      margin-top: 0px;
+    }
+    ul {
+      color: black;
+    }
+  }
+
+  input[type='text'] {
     color: white;
     width: 100%;
     border: 0;
@@ -158,21 +192,7 @@ const PostAdForm = styled.form`
     }
   }
 
-  div {
-    margin: 14px 0;
-    > div {
-      margin-top: 0px;
-    }
-    ul {
-      color: black;
-    }
-  }
-
-  input[type='radio'] {
-    width: 20px;
-  }
-
-  input[type='checkbox'] {
+  input[type='radio'], input[type='checkbox'] {
     width: 20px;
   }
 
@@ -202,24 +222,27 @@ const PostAdForm = styled.form`
     padding-bottom: 5px;
   }
 
-  button {
+  select {
     display: block;
+    margin-top: 5px;
     font-family: inherit;
-    font-size: 14px;
-    border: none;
-    border-radius: 10px;
-    color: #ecf0f1;
-    padding: 8px;
-    background: #f24e86;
-    width: 100%;
-    cursor: pointer;
-    box-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.2),
-      0 0 0rem rgba(0, 0, 0, 0.2);;
-    &:active,
-    &:focus {
-      outline: none;
-    }
   }
 `
-
-const SearchInput = styled(Search)``
+const SubmitBtn = styled.input`
+  display: block;
+  font-family: inherit;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  color: #ecf0f1;
+  padding: 8px;
+  background: #f24e86;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.2), 0 0 0rem rgba(0, 0, 0, 0.2);
+  &:active,
+  &:focus {
+    outline: none;
+  }
+`
