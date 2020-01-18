@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
+import moment from 'moment'
+import 'moment/locale/de'
 
 import maleImg from '../img/male.svg'
 import femaleImg from '../img/female.svg'
@@ -20,7 +22,10 @@ export default function AnimalThumbnail({ handleAnimal, ...props }) {
         ></Gender>
       </PictureContainer>
       <Name>{props.name}</Name>
-      <Registered>Am {props.registered.substr(0, 5)} hinzugefügt</Registered>
+      <Registered>
+        {moment(new Date(props.registered.seconds * 1000)).fromNow()}{' '}
+        hinzugefügt
+      </Registered>
     </Thumbnail>
   )
 }
@@ -72,7 +77,7 @@ const ProfilePicture = styled.img`
 `
 
 const Registered = styled.p`
-  font-size: 13px;
+  font-size: 12px;
   margin: 0;
   color: gray;
   padding-bottom: 5px;

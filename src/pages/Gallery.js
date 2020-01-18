@@ -5,10 +5,11 @@ import Navigation from '../components/Navigation'
 import SearchInput from '../components/Search'
 
 export default function Gallery({
-  database,
+  loggedIn,
   handleAnimal,
   handleSideNav,
-  sideNavOpen
+  sideNavOpen,
+  animalList
 }) {
   const [showSearch, setshowSearch] = useState(false)
   const [showFilteredByBreed, setShowFilteredByBreed] = useState('')
@@ -24,7 +25,7 @@ export default function Gallery({
         <SearchInput getUserInput={getUserInput} gallery />
       </Searchbar>
       <GalleryBox sideNavOpen={sideNavOpen}>
-        {database
+        {animalList
           .filter(animal => {
             return animal.breed
               .toLowerCase()

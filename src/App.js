@@ -1,60 +1,63 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import GlobalStyle from './styles/GlobalStyle'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import * as firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
+import firebaseConfig from './components/firebase/FirebaseConfig'
 import Gallery from './pages/Gallery'
 import AnimalProfile from './pages/AnimalProfile'
 import UserProfile from './pages/UserProfile'
 import PostAd from './components/PostAd'
+import Registration from './components/Registration'
+import Login from './components/Login'
 
-import * as firebase from 'firebase/app'
-import 'firebase/firestore'
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyBLAQCvYLxD3DosiTj-PgUYpZocIhrorq0',
-  authDomain: 'petster-app.firebaseapp.com',
-  databaseURL: 'https://petster-app.firebaseio.com',
-  projectId: 'petster-app',
-  storageBucket: 'petster-app.appspot.com',
-  messagingSenderId: '768467764431',
-  appId: '1:768467764431:web:2b48031a3d9970c45d63ba'
-}
 firebase.initializeApp(firebaseConfig)
 
-/* let db = firebase.firestore()
-db.collection("dogs").add({
-    isAvailable: true,
-    profilePicture: "https://i.imgur.com/zgC3qY6.jpg",
-    gallery: [
-      "https://i.imgur.com/UEaT23h.jpg",
-      "https://i.imgur.com/BpHnLcP.jpg"
-    ],
-    age: 23,
-    name: "Trisha",
-    gender: "female",
-  breed: "Terrier",
-    registered: "29.10.2019",
-    description: "Die kleine Maus sucht ein schönes Zuhause. Sie kann sitz, platz, bleib und den Ball holen. Derzeit lebt Sie mit einem Mini Bulli zusammen und Kinder kennt sie auch. Sie ist 5-6 monate alt, geimpft und entwurmt.",
-    tags: ["minim", "tempor", "Lorem"]
-})
-.then(function(docRef) {
-  console.log("Document written with ID: ", docRef.id);
-})
-.catch(function(error) {
-  console.error("Error adding document: ", error);
-}); */
+/* import {getAnimals} from './components/firebase/FirebaseServices' */
 
 const CLOUDNAME = process.env.REACT_APP_CLOUDINARY_CLOUDNAME
 const PRESET = process.env.REACT_APP_CLOUDINARY_PRESET
 
 export default function App() {
-  const database = require('./dog_database.json')
+  useEffect(() => {
+    let animalArr = []
+    let db = firebase.firestore()
+    db.collection('dogs')
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          let animalObj = doc.data()
+          animalObj._id = doc.id
+          animalArr = [...animalArr, animalObj]
+          setAnimalList(animalArr)
+        })
+      })
+    /*       getAnimals().then(setAnimalList)
+      console.log(getAnimals().then(setAnimalList)) */
+  }, [])
+
+  const [loggedIn, setLoggedin] = useState(false)
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        setLoggedin(true)
+      } else {
+        setLoggedin(false)
+      }
+    })
+    console.log(loggedIn)
+  }, [loggedIn])
+
+  const [animalList, setAnimalList] = useState([])
+
   const userDatabase = require('./user_database.json')
   const [image, setImage] = useState('')
 
-  let animalDataFromStorage = JSON.parse(localStorage.animal || {})
-  const [animal, setAnimal] = useState(animalDataFromStorage)
-  const [user, setUser] = useState(animalDataFromStorage)
+  const [animal, setAnimal] = useState()
+  const [user, setUser] = useState()
   const [sideNavOpen, setSideNavOpen] = useState(false)
 
   return (
@@ -63,15 +66,16 @@ export default function App() {
       <Switch>
         <Route exact path="/">
           <Gallery
-            database={database}
+            loggedIn={loggedIn}
             handleAnimal={handleAnimal}
             handleSideNav={handleSideNav}
             sideNavOpen={sideNavOpen}
+            animalList={animalList}
           />
         </Route>
         <Route path="/animalprofile/*">
           <AnimalProfile
-            animal={!animal || animalDataFromStorage}
+            animal={!animal}
             handleSideNav={handleSideNav}
             sideNavOpen={sideNavOpen}
           />
@@ -89,9 +93,29 @@ export default function App() {
         <Route path="/postad/">
           <PostAd firebase={firebase} />
         </Route>
+        <Route path="/register/">
+          <Registration
+            firebase={firebase}
+            handleLoggedIn={handleLoggedIn}
+            loggedIn={loggedIn}
+          />
+        </Route>
+        <Route path="/login/">
+          <Login firebase={firebase} />
+        </Route>
       </Switch>
     </Router>
   )
+
+  function handleLoggedIn() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        setLoggedin(true)
+      } else {
+        setLoggedin(false)
+      }
+    })
+  }
 
   function uploadImage(event) {
     const url = `https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`

@@ -91,10 +91,11 @@ export default function PostAd({ firebase }) {
       breed: newAnimal.breed,
       registered: firebase.firestore.Timestamp.fromDate(new Date()),
       desc: newAnimal.desc,
-      tags: newAnimal.tags
+      tags: newAnimal.tags,
+      profilePicture: 'https://i.imgur.com/yQLdqvV.jpg',
+      gallery: ['https://i.imgur.com/0RGOt0W.jpg']
     }
 
-    if (event.target) console.log('true')
     let db = firebase.firestore()
     db.collection('dogs')
       .add(docData)
@@ -141,30 +142,30 @@ const BackgroundImgWrapper = styled.div`
 const NavigationWrapper = styled(Link)`
   & i {
     padding: 20px 20px 0 20px;
-    color: #2a4755;
-    font-size: 36px;
+    color: #fff;
+    font-size: 32px;
   }
 `
 
 const PostAdForm = styled.form`
   display: grid;
-  width: 100vw;
+  width: 100%;
   padding: 10px 50px 50px 50px;
   color: white;
   font-family: inherit;
   font-weight: 400;
   font-size: 14px;
-  animation: ${blur} 1s ease-in;
+  animation: ${blur} 0.8s ease-in;
 
   h1 {
     font-size: 36px;
     font-weight: 300;
-    margin: 0 0 20px 0;
+    margin-bottom: 20px;
   }
 
   h4 {
     font-weight: 400;
-    margin: 0 0 20px 0;
+    margin-bottom: 20px;
   }
 
   div {
@@ -184,7 +185,7 @@ const PostAdForm = styled.form`
     border-bottom: 2px solid lightgray;
     outline: 0;
     background: transparent;
-    padding: 9px 0;
+    padding: 12px 0;
     text-align: left;
     :focus {
       border-image: linear-gradient(to right, #99ddfc, #f1919b);
@@ -192,7 +193,8 @@ const PostAdForm = styled.form`
     }
   }
 
-  input[type='radio'], input[type='checkbox'] {
+  input[type='radio'],
+  input[type='checkbox'] {
     width: 20px;
   }
 
