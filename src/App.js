@@ -9,18 +9,24 @@ import firebaseConfig from './components/firebase/FirebaseConfig'
 import Gallery from './pages/Gallery'
 import AnimalProfile from './pages/AnimalProfile'
 import UserProfile from './pages/UserProfile'
-import PostAd from './components/PostAd'
-import Registration from './components/Registration'
-import Login from './components/Login'
+import PostAd from './pages/PostAd'
+import Registration from './pages/Registration'
+import Login from './pages/Login'
 
 firebase.initializeApp(firebaseConfig)
-
-/* import {getAnimals} from './components/firebase/FirebaseServices' */
 
 const CLOUDNAME = process.env.REACT_APP_CLOUDINARY_CLOUDNAME
 const PRESET = process.env.REACT_APP_CLOUDINARY_PRESET
 
 export default function App() {
+  const [loggedIn, setLoggedin] = useState()
+  const [animalList, setAnimalList] = useState([])
+  const [image, setImage] = useState('')
+
+  const [currentAnimal, setCurrentAnimal] = useState()
+  const [currentUser, setCurrentUser] = useState({})
+  const [sideNavOpen, setSideNavOpen] = useState(false)
+
   useEffect(() => {
     let animalArr = []
     let db = firebase.firestore()
@@ -34,88 +40,67 @@ export default function App() {
           setAnimalList(animalArr)
         })
       })
-    /*       getAnimals().then(setAnimalList)
-      console.log(getAnimals().then(setAnimalList)) */
   }, [])
-
-  const [loggedIn, setLoggedin] = useState(false)
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         setLoggedin(true)
+
+        let db = firebase.firestore()
+        db.collection('users')
+          .doc(user.uid)
+          .get()
+          .then(function(userData) {
+            if (userData.exists) {
+              setCurrentUser(userData.data())
+            } else {
+              console.log(user.uid, `User doesn't exist.`)
+            }
+          })
       } else {
         setLoggedin(false)
       }
     })
-    console.log(loggedIn)
   }, [loggedIn])
-
-  const [animalList, setAnimalList] = useState([])
-
-  const userDatabase = require('./user_database.json')
-  const [image, setImage] = useState('')
-
-  const [animal, setAnimal] = useState()
-  const [user, setUser] = useState()
-  const [sideNavOpen, setSideNavOpen] = useState(false)
 
   return (
     <Router>
       <GlobalStyle />
       <Switch>
-        <Route exact path="/">
+        <Route exact path="/gallery/">
           <Gallery
             loggedIn={loggedIn}
             handleAnimal={handleAnimal}
             handleSideNav={handleSideNav}
             sideNavOpen={sideNavOpen}
             animalList={animalList}
+            handleSignOut={handleSignOut}
           />
         </Route>
         <Route path="/animalprofile/*">
-          <AnimalProfile
-            animal={!animal}
-            handleSideNav={handleSideNav}
-            sideNavOpen={sideNavOpen}
-          />
+          <AnimalProfile animal={currentAnimal} />
         </Route>
         <Route path="/profile/">
           <UserProfile
-            user={userDatabase[0]}
-            handleUser={handleUser}
-            handleSideNav={handleSideNav}
-            sideNavOpen={sideNavOpen}
+            user={currentUser}
             image={image}
             upload={event => uploadImage(event)}
-          />
-        </Route>
-        <Route path="/postad/">
-          <PostAd firebase={firebase} />
-        </Route>
-        <Route path="/register/">
-          <Registration
-            firebase={firebase}
-            handleLoggedIn={handleLoggedIn}
             loggedIn={loggedIn}
           />
         </Route>
+        <Route path="/postad/">
+          <PostAd firebase={firebase} loggedIn={loggedIn} />
+        </Route>
+        <Route path="/register/">
+          <Registration firebase={firebase} loggedIn={loggedIn} />
+        </Route>
         <Route path="/login/">
-          <Login firebase={firebase} />
+          <Login firebase={firebase} loggedIn={loggedIn} />
         </Route>
       </Switch>
     </Router>
   )
-
-  function handleLoggedIn() {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        setLoggedin(true)
-      } else {
-        setLoggedin(false)
-      }
-    })
-  }
 
   function uploadImage(event) {
     const url = `https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`
@@ -138,16 +123,21 @@ export default function App() {
     setImage(response.data.url)
   }
 
-  function handleAnimal(animal) {
-    setAnimal(animal)
-    localStorage.animal = JSON.stringify(animal)
-  }
-  function handleUser(user) {
-    setUser(user)
-    localStorage.user = JSON.stringify(user)
+  function handleAnimal(currentAnimal) {
+    setCurrentAnimal(currentAnimal)
   }
 
   function handleSideNav() {
     setSideNavOpen(!sideNavOpen)
+  }
+
+  function handleSignOut() {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {})
+      .catch(function(error) {
+        console.error('SignOut error: ' + error)
+      })
   }
 }

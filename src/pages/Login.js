@@ -1,78 +1,73 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components/macro'
-import { Link } from 'react-router-dom'
+import { Link, Route, Redirect } from 'react-router-dom'
 
 import background from '../img/background_x667.jpg'
 import backgroundBlurred from '../img/background_x667_blurred.jpg'
 
-export default function PostAd({ firebase }) {
+export default function Login({ firebase, loggedIn }) {
   return (
-    <LoginWrapper>
-      <BackgroundImgWrapper>
-        <img src={background} alt="background" />
-        <img src={backgroundBlurred} alt="" />
-      </BackgroundImgWrapper>
-      <NavigationWrapper to={'/'}>
-        <i className="fas fa-arrow-left"></i>
-      </NavigationWrapper>
-      <LoginForm onSubmit={event => login(event)}>
-        <h1>Login</h1>
-        <p>
-          <label htmlFor="email">EMAIL ADRESSE</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="meine@email.de"
-            required
-          ></input>
-        </p>
-        <p>
-          <label htmlFor="password">PASSWORT</label>
-          <input id="password" name="password" type="password" required></input>
-        </p>
-        <BtnWrapper>
-          <LoginBtn type="submit" value="EINLOGGEN" />
-          <LinkToRecovery to={'/login'}>
-            <InputBtn type="button" value="Passwort vergessen?" />
-          </LinkToRecovery>
-          <LinkToRegister to={'/register'}>
-            <StickyInputBtn
-              type="button"
-              value="Kein Account? Zur Registrierung"
-            />
-          </LinkToRegister>
-        </BtnWrapper>
-      </LoginForm>
-    </LoginWrapper>
+    <Route>
+      {loggedIn ? (
+        <Redirect to="/gallery" />
+      ) : (
+        <LoginWrapper>
+          <BackgroundImgWrapper>
+            <img src={background} alt="background" />
+            <img src={backgroundBlurred} alt="" />
+          </BackgroundImgWrapper>
+          <NavigationWrapper to={'/gallery'}>
+            <i className="fas fa-arrow-left"></i>
+          </NavigationWrapper>
+          <LoginForm onSubmit={event => handleLogin(event)}>
+            <h1>Login</h1>
+            <p>
+              <label htmlFor="email">EMAIL ADRESSE</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="meine@email.de"
+                required
+              ></input>
+            </p>
+            <p>
+              <label htmlFor="password">PASSWORT</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+              ></input>
+            </p>
+            <BtnWrapper>
+              <LoginBtn type="submit" value="EINLOGGEN" />
+              <LinkToRecovery to={'/login'}>
+                <InputBtn type="button" value="Passwort vergessen?" />
+              </LinkToRecovery>
+              <LinkToRegister to={'/register'}>
+                <StickyInputBtn
+                  type="button"
+                  value="Kein Account? Zur Registrierung"
+                />
+              </LinkToRegister>
+            </BtnWrapper>
+          </LoginForm>
+        </LoginWrapper>
+      )}
+    </Route>
   )
 
-  function login(event) {
+  function handleLogin(event) {
     event.preventDefault()
-    const newUser = Object.fromEntries(new FormData(event.target))
+    const user = Object.fromEntries(new FormData(event.target))
 
-    let docData = {
-      isActive: true,
-      karma: 0,
-      age: newUser.age,
-      username: newUser.username,
-      registered: firebase.firestore.Timestamp.fromDate(new Date()),
-      email: newUser.email,
-      password: newUser.password,
-      about: newUser.about || '',
-      profilePicture: 'https://i.imgur.com/QZKASj1.jpg'
-    }
-
-    let db = firebase.firestore()
-    db.collection('users')
-      .add(docData)
-      .then(function(docRef) {
-        console.log('Document written with ID: ', docRef.id)
-      })
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(user.email, user.password)
       .catch(function(error) {
-        console.error('Error adding document: ', error)
+        console.log(error.code + ': ' + error.message)
       })
-
     event.target.reset()
   }
 }
@@ -103,7 +98,7 @@ const BackgroundImgWrapper = styled.div`
     position: absolute;
   }
   img:last-child {
-    animation: ${blur} 0.8s ease-in;
+    animation: ${blur} 0.5s ease-in;
   }
 `
 
@@ -123,7 +118,7 @@ const LoginForm = styled.form`
   font-family: inherit;
   font-weight: 400;
   font-size: 14px;
-  animation: ${blur} 0.8s ease-in;
+  animation: ${blur} 0.5s ease-in;
 
   h1 {
     font-size: 36px;

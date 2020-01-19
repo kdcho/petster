@@ -102,7 +102,7 @@ export const SearchField = styled.div`
   width: 100%;
   align-self: center;
 
-  & input {
+  input {
     position: relative;
     text-align: center;
     border: 1px solid #999;

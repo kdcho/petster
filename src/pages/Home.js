@@ -5,9 +5,9 @@ import { Link, Route, Redirect } from 'react-router-dom'
 import background from '../img/background_x667.jpg'
 import backgroundBlurred from '../img/background_x667_blurred.jpg'
 
-export default function Registration({ firebase, handleLoggedIn, loggedIn }) {
+export default function PostAd({ firebase, loggedIn }) {
   return (
-    <RegisterWrapper>
+    <LoginWrapper>
       <BackgroundImgWrapper>
         <img src={background} alt="background" />
         <img src={backgroundBlurred} alt="" />
@@ -15,8 +15,8 @@ export default function Registration({ firebase, handleLoggedIn, loggedIn }) {
       <NavigationWrapper to={'/'}>
         <i className="fas fa-arrow-left"></i>
       </NavigationWrapper>
-      <RegisterForm onSubmit={event => handleRegisterUser(event)}>
-        <h1>Registrierung</h1>
+      <LoginForm onSubmit={event => handleLogin(event)}>
+        <h1>Login</h1>
         <p>
           <label htmlFor="email">EMAIL ADRESSE</label>
           <input
@@ -29,59 +29,36 @@ export default function Registration({ firebase, handleLoggedIn, loggedIn }) {
         </p>
         <p>
           <label htmlFor="password">PASSWORT</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength="6"
-          ></input>
+          <input id="password" name="password" type="password" required></input>
         </p>
         <BtnWrapper>
-          <RegisterBtn type="submit" value="REGISTRIEREN" />
-          <LinkToLogin to={'/login'}>
-            <MemberBtn type="button" value="Bereits registriert?" />
-          </LinkToLogin>
+          <LoginBtn type="submit" value="EINLOGGEN" />
+          <LinkToRecovery to={'/login'}>
+            <InputBtn type="button" value="Passwort vergessen?" />
+          </LinkToRecovery>
+          <LinkToRegister to={'/register'}>
+            <StickyInputBtn
+              type="button"
+              value="Kein Account? Zur Registrierung"
+            />
+          </LinkToRegister>
         </BtnWrapper>
-      </RegisterForm>
+      </LoginForm>
       <Route>{loggedIn ? <Redirect to="/" /> : ''}</Route>
-    </RegisterWrapper>
+    </LoginWrapper>
   )
 
-  function handleRegisterUser(event) {
+  function handleLogin(event) {
     event.preventDefault()
     const newUser = Object.fromEntries(new FormData(event.target))
+
     firebase
       .auth()
-      .createUserWithEmailAndPassword(newUser.email, newUser.password)
-      .then(function(response) {
-        if (newUser.email === response.user.email) {
-          const user = firebase.auth().currentUser
-          user
-            .sendEmailVerification()
-            .then(function() {
-              handleLoggedIn()
-            })
-            .catch(function(error) {
-              console.log('Verification Error: ' + error)
-            })
-        }
-      })
+      .signInWithEmailAndPassword(newUser.email, newUser.password)
       .catch(function(error) {
         console.log(error.code + ': ' + error.message)
-        if (error.Code === 'auth/weak-password') {
-          alert('The password is too weak.')
-        }
-        handleEmailAlreadyExists(error.Code)
+        event.target.reset()
       })
-
-    event.target.reset()
-  }
-  function handleEmailAlreadyExists(errorCode) {
-    if (errorCode.includes('auth/email-already-in-use')) {
-      const emailField = document.querySelector("[id='email']")
-      emailField.setCustomValidity('Email already in use.')
-    }
   }
 }
 
@@ -93,7 +70,7 @@ to {
   opacity: 1;
 }`
 
-const RegisterWrapper = styled.div`
+const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -123,7 +100,7 @@ const NavigationWrapper = styled(Link)`
   }
 `
 
-const RegisterForm = styled.form`
+const LoginForm = styled.form`
   display: grid;
   width: 100%;
   padding: 10px 50px 10px 50px;
@@ -140,6 +117,7 @@ const RegisterForm = styled.form`
   }
 
   input[type='text'],
+  [type='number'],
   [type='email'],
   [type='password'] {
     color: white;
@@ -157,6 +135,16 @@ const RegisterForm = styled.form`
       border-image-slice: 1;
     }
   }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `
 const BtnWrapper = styled.div`
   display: flex;
@@ -164,7 +152,7 @@ const BtnWrapper = styled.div`
   margin-top: 30px;
 `
 
-const RegisterBtn = styled.input`
+const LoginBtn = styled.input`
   font-family: inherit;
   font-size: 16px;
   border: none;
@@ -182,18 +170,31 @@ const RegisterBtn = styled.input`
     outline: none;
   }
 `
-const LinkToLogin = styled(Link)`
-  text-decoration: none;
-`
 
-const MemberBtn = styled.input`
+const InputBtn = styled.input`
   width: 100%;
   font-family: inherit;
   font-size: 14px;
   border: none;
   color: #ecf0f1;
-  margin: 14px 0;
+  margin: 20px 0;
   background: transparent;
-  text-align: center;
   cursor: pointer;
+`
+
+const StickyInputBtn = styled(InputBtn)`
+  position: absolute;
+  background: #2c2b2b2b;
+  padding: 14px;
+  margin: 0;
+  left: 0;
+  bottom: 0;
+`
+
+const LinkToRecovery = styled(Link)`
+  text-decoration: none;
+`
+
+const LinkToRegister = styled(Link)`
+  text-decoration: none;
 `

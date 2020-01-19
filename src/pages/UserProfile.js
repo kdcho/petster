@@ -1,70 +1,75 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import Navigation from '../components/Navigation'
 import PictureUpload from '../components/PictureUpload'
+import { Link, Route, Redirect } from 'react-router-dom'
+import moment from 'moment'
 
-export default function UserProfile({
-  user,
-  handleSideNav,
-  sideNavOpen,
-  image,
-  upload
-}) {
+moment.updateLocale('de', {
+  relativeTime: {
+    future: 'in %s',
+    past: 'seit %s'
+  }
+})
+
+export default function UserProfile({ user, image, upload, loggedIn }) {
   const [openUpload, setOpenUpload] = useState(false)
 
   return (
-    <Container sideNavOpen={sideNavOpen}>
-      <Navigation
-        userprofile
-        handleSideNav={handleSideNav}
-        sideNavOpen={sideNavOpen}
-      />
-      <Profile sideNavOpen={sideNavOpen}>
-        <Header>
-          <ProfilePic>
-            <PicWrapper>
-              <img src={user.picture} alt="profile" />
-              <CameraOuter /* onClick={() => setOpenUpload(!openUpload)} */>
-                <CameraInner>
-                  <i className="fa fa-camera" aria-hidden="true" />
-                </CameraInner>
-              </CameraOuter>
-              <PenOuter>
-                <PenInner>
-                  <i className="fa fa-pen" aria-hidden="true" />
-                </PenInner>
-              </PenOuter>
-            </PicWrapper>
-          </ProfilePic>
-          <Subheader>
-            <Name>{user.name}</Name>
-            <Karma>
-              {user.karma}
-              <i className="fas fa-bone" aria-hidden="true" />
-            </Karma>
-          </Subheader>
-        </Header>
-        <DetailsContainer sideNavOpen={sideNavOpen}>
-          <About about={user.about}>
-            {user.about ? user.about : 'Beschreibung folgt..'}
-          </About>
-          <Registered>
-            <i className="fa fa-calendar-alt" aria-hidden="true" />
-            {user.registered.substr(7, 4) < new Date().getFullYear()
-              ? `Dabei seit ${user.registered}`
-              : `Dabei seit ${user.registered.substr(0, 5)}`}
-          </Registered>
-          <Contact sideNavOpen={sideNavOpen}>
-            Kontaktinformationen anzeigen
-          </Contact>
-        </DetailsContainer>
-      </Profile>
-      {openUpload ? (
-        <PictureUpload image={image} upload={upload}></PictureUpload>
+    <Route>
+      {loggedIn ? (
+        <Container>
+          <NavigationWrapper to={'/gallery'}>
+            <i className="fas fa-arrow-left"></i>
+          </NavigationWrapper>
+          <Profile>
+            <Header>
+              <ProfilePic>
+                <PicWrapper>
+                  <img src={user.photoURL} alt="profile" />
+                  <CameraOuter onClick={() => setOpenUpload(!openUpload)}>
+                    <CameraInner>
+                      <i className="fa fa-camera" aria-hidden="true" />
+                    </CameraInner>
+                  </CameraOuter>
+                  <PenOuter>
+                    <PenInner>
+                      <i className="fa fa-pen" aria-hidden="true" />
+                    </PenInner>
+                  </PenOuter>
+                </PicWrapper>
+              </ProfilePic>
+              <Subheader>
+                <Name>{user.name}</Name>
+                <Karma>
+                  {user.karma}
+                  <i className="fas fa-bone" aria-hidden="true" />
+                </Karma>
+              </Subheader>
+            </Header>
+            <DetailsContainer>
+              <About about={user.about}>
+                {user.about ? user.about : 'Beschreibung folgt..'}
+              </About>
+              <Registered>
+                <i className="fa fa-calendar-alt" aria-hidden="true" />
+                Registriert{' '}
+                {moment(
+                  new Date(user.registered.seconds * 1000)
+                ).fromNow()}{' '}
+              </Registered>
+              <Contact>Kontaktinformationen anzeigen</Contact>
+            </DetailsContainer>
+          </Profile>
+          {openUpload ? (
+            <PictureUpload image={image} upload={upload}></PictureUpload>
+          ) : (
+            ''
+          )}
+        </Container>
       ) : (
-        ''
+        <Redirect to="/gallery" />
       )}
-    </Container>
+    </Route>
   )
 }
 
@@ -75,15 +80,20 @@ const Container = styled.section`
   width: 100%;
   background: #2a4755;
 `
+const NavigationWrapper = styled(Link)`
+  & i {
+    padding: 20px 20px 0 20px;
+    color: #fff;
+    font-size: 32px;
+    z-index: 5;
+    position: fixed;
+  }
+`
 
 const Profile = styled.div`
   display: grid;
   grid-template-rows: 280px auto;
   width: 100%;
-  transition: all 0.3s ease-in;
-  xposition: ${props => (props.sideNavOpen ? 'fixed' : 'unset')};
-  margin-left: ${props => (props.sideNavOpen ? '300px' : 'unset')};
-  opacity: ${props => (props.sideNavOpen ? '0.4' : '1')};
 `
 
 const Header = styled.header`
@@ -241,5 +251,4 @@ const Contact = styled.button`
   align-self: end;
   outline: 0;
   cursor: pointer;
-  display: ${props => (props.sideNavOpen ? 'none' : 'block')};
 `
