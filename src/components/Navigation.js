@@ -9,7 +9,8 @@ export default function Navigation({
   handleSearch,
   sideNavOpen,
   animalprofile,
-  userprofile
+  userprofile,
+  handleSignOut
 }) {
   const { pathname } = useLocation()
 
@@ -38,7 +39,11 @@ export default function Navigation({
         sideNavOpen={sideNavOpen}
       />
       <Sidebar sideNavOpen={sideNavOpen}>
-        <MenuItem to={'/'} onClick={handleSideNav} sideNavOpen={sideNavOpen}>
+        <MenuItem
+          to={'/gallery'}
+          onClick={handleSideNav}
+          sideNavOpen={sideNavOpen}
+        >
           Gallery
         </MenuItem>
         <MenuItem
@@ -47,6 +52,13 @@ export default function Navigation({
           sideNavOpen={sideNavOpen}
         >
           Eigenes Profil
+        </MenuItem>
+        <MenuItem
+          to={'/postAd'}
+          onClick={handleSideNav}
+          sideNavOpen={sideNavOpen}
+        >
+          Hund hinzufügen
         </MenuItem>
         <MenuItem
           to={'/settings'}
@@ -61,6 +73,16 @@ export default function Navigation({
           sideNavOpen={sideNavOpen}
         >
           Über Petster
+        </MenuItem>
+        <MenuItem
+          to={'/'}
+          onClick={() => {
+            handleSignOut()
+            handleSideNav()
+          }}
+          sideNavOpen={sideNavOpen}
+        >
+          Ausloggen
         </MenuItem>
       </Sidebar>
     </Container>
@@ -139,7 +161,7 @@ const Header = styled.div`
     position: absolute;
     height: 50px;
     padding: 10px;
-    align-self: end;
+    align-self: flex-end;
     cursor: pointer;
     transition: all 0.3s ease-in;
     opacity: ${props => (props.sideNavOpen ? '0' : '1')};
@@ -205,5 +227,9 @@ const MenuItem = styled(LinkStyled)`
 
   &:nth-of-type(5) {
     margin-left: ${props => (props.sideNavOpen ? '0' : '-120px')};
+  }
+
+  &:nth-of-type(6) {
+    margin-left: ${props => (props.sideNavOpen ? '0' : '-140px')};
   }
 `

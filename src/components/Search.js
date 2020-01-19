@@ -59,8 +59,10 @@ export default function Search({ getUserInput, gallery }) {
         }}
         onBlur={onBlur}
         value={userInput}
+        name="breed"
         type="text"
         placeholder={gallery ? 'Durchsuchen' : ''}
+        required
       />
       {gallery ? (
         <SearchIcon src={deleteIcon} onClick={() => setUserInput('')} />
@@ -100,7 +102,7 @@ export const SearchField = styled.div`
   width: 100%;
   align-self: center;
 
-  & input {
+  input {
     position: relative;
     text-align: center;
     border: 1px solid #999;

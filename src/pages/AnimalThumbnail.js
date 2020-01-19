@@ -1,37 +1,45 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
+import moment from 'moment'
+import 'moment/locale/de'
 
 import maleImg from '../img/male.svg'
 import femaleImg from '../img/female.svg'
 
-export default function AnimalThumbnail({ handleAnimal, ...props }) {
+export default function AnimalThumbnail({ handleAnimal, ...animal }) {
   return (
-    <Thumbnail to={() => `/animalprofile/${props._id}`} onClick={handleAnimal}>
+    <Thumbnail to={() => `/animalprofile/${animal._id}`} onClick={handleAnimal}>
       <PictureContainer>
         <ProfilePicture
-          src={props.profilePicture}
-          alt={props.name}
+          src={animal.profilePicture}
+          alt={animal.name}
         ></ProfilePicture>
         <Gender
-          src={props.gender === 'male' ? maleImg : femaleImg}
-          alt={props.gender}
-          gender={props.gender}
+          src={animal.gender === 'male' ? maleImg : femaleImg}
+          alt={animal.gender}
+          gender={animal.gender}
         ></Gender>
       </PictureContainer>
-      <Name>{props.name}</Name>
-      <Registered>Am {props.registered.substr(0, 5)} hinzugefügt</Registered>
+      <Name>{animal.name}</Name>
+      <Registered>
+        {moment(new Date(animal.registered.seconds * 1000)).fromNow()}{' '}
+        hinzugefügt
+      </Registered>
     </Thumbnail>
   )
 }
 
 const Thumbnail = styled(Link)`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  width: 150px;
   border-radius: 5px;
   margin: 10px;
   text-decoration: none;
   color: #000;
+  background: #fff;
   box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 0rem rgba(0, 0, 0, 0.2);
   &:hover {
     box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
@@ -72,8 +80,12 @@ const ProfilePicture = styled.img`
 `
 
 const Registered = styled.p`
-  font-size: 13px;
+  display: flex;
+  font-size: 12px;
   margin: 0;
   color: gray;
   padding-bottom: 5px;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
 `

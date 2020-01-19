@@ -1,24 +1,23 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled, { keyframes } from 'styled-components/macro'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
-import Navigation from '../components/Navigation'
+import { Link } from 'react-router-dom'
 
 import maleImg from '../img/male.svg'
 import femaleImg from '../img/female.svg'
+import moment from 'moment'
 
-export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
+export default function AnimalProfile({ animal }) {
   const gallery = [animal.profilePicture, ...animal.gallery]
 
   return (
     <Container>
-      <Navigation
-        animalprofile
-        handleSideNav={handleSideNav}
-        sideNavOpen={sideNavOpen}
-      />
-      <ProfilePage sideNavOpen={sideNavOpen}>
-        <CarouselContainer sideNavOpen={sideNavOpen}>
+      <NavigationWrapper to={'/gallery'}>
+        <i className="fas fa-arrow-left"></i>
+      </NavigationWrapper>
+      <ProfilePage>
+        <CarouselContainer>
           <Carousel showThumbs={false} showStatus={false}>
             {gallery.map((picture, index) => (
               <Slider key={index} src={picture} alt={animal.name}></Slider>
@@ -30,15 +29,16 @@ export default function AnimalProfile({ animal, handleSideNav, sideNavOpen }) {
             gender={animal.gender}
           ></Gender>
         </CarouselContainer>
-        <DetailsContainer sideNavOpen={sideNavOpen}>
+        <DetailsContainer>
           <Name>{animal.name}</Name>
           <Subtitle>
             <Breed>{animal.breed},</Breed>
-            <Age>{animal.age} Wochen alt</Age>
+            <Age>{animal.age}</Age>
           </Subtitle>
-          <Description>{animal.description}</Description>
+          <Description>{animal.desc}</Description>
           <Registered>
-            Am {animal.registered.substr(0, 5)} hinzugefügt
+            {moment(new Date(animal.registered.seconds * 1000)).fromNow()}{' '}
+            hinzugefügt
           </Registered>
           <Contact gender={animal.gender}>
             Kontaktinformationen anzeigen
@@ -56,7 +56,16 @@ const Container = styled.section`
   width: 100%;
   background: #f8f7f5;
   overflow: hidden;
-  transition: all 0.3s ease-in;
+  z-index: 2;
+`
+const NavigationWrapper = styled(Link)`
+  & i {
+    padding: 20px 20px 0 20px;
+    color: #fff;
+    font-size: 32px;
+    z-index: 5;
+    position: fixed;
+  }
 `
 
 const ProfilePage = styled.div`
@@ -65,15 +74,20 @@ const ProfilePage = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  transition: all 0.3s ease-in;
   position: relative;
-  margin-left: ${props => (props.sideNavOpen ? '300px' : 'none')};
-  opacity: ${props => (props.sideNavOpen ? '0.4' : '1')};
 `
+const blur = keyframes`
+from {
+  opacity: 0;
+}
+to {
+  opacity: 1;
+}`
 
 const CarouselContainer = styled.div`
   .carousel.carousel-slider .control-arrow {
     padding: 15px;
+    animation: ${blur} 1s ease-in forwards;
   }
   .carousel .control-next.control-arrow::before {
     border-left: 12px solid #fff;
@@ -109,7 +123,6 @@ const Gender = styled.img`
 
 const DetailsContainer = styled.div`
   z-index: 1;
-  background: #fff;
   height: 100%;
   display: grid;
   justify-content: space-evenly;
@@ -118,14 +131,12 @@ const DetailsContainer = styled.div`
 `
 
 const Name = styled.h1`
-  justify-self: start;
   margin: 10px 0 10px 10px;
   font-size: 30px;
   grid-column: 1 / span 4;
 `
 
 const Subtitle = styled.div`
-  justify-self: start;
   margin: 10px 0 10px 10px;
   grid-column: 1 / span 4;
   font-size: 14px;
@@ -133,16 +144,13 @@ const Subtitle = styled.div`
 
 const Breed = styled.h2`
   display: inline;
-  justify-self: start;
   color: #383838;
   margin: 10px 0 10px 0;
 `
 
-const Age = styled.h2`
-  display: inline;
-  justify-self: start;
+const Age = styled.p`
   color: #383838;
-  margin: 10px 0 10px 10px;
+  margin: 10px 0;
 `
 
 const Description = styled.p`
