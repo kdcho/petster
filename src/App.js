@@ -12,6 +12,7 @@ import UserProfile from './pages/UserProfile'
 import PostAd from './pages/PostAd'
 import Registration from './pages/Registration'
 import Login from './pages/Login'
+import LandingPage from './pages/LandingPage'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -97,6 +98,9 @@ export default function App() {
         </Route>
         <Route path="/login/">
           <Login firebase={firebase} loggedIn={loggedIn} />
+        </Route>
+        <Route path="/">
+          <LandingPage firebase={firebase} loggedIn={loggedIn} />
         </Route>
       </Switch>
     </Router>

@@ -75,7 +75,7 @@ export default function Navigation({
           Über Petster
         </MenuItem>
         <MenuItem
-          to={'/'}
+          to={'/gallery'}
           onClick={() => {
             handleSignOut()
             handleSideNav()
