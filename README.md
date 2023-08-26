@@ -30,8 +30,6 @@ npm start
 
 ## Author
 
-👤 **Krystian Chodak**
-
 - Github: [@kdcho](https://github.com/kdcho)
 
 ## Show your support
